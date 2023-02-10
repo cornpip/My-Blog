@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Get, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -40,9 +40,8 @@ export class PostService {
       postimage.post = mdpost;
       postimage.imageName = imgName;
       await this.postimages.save(postimage);
-      
     } catch (err) {
-      throw new HttpException("post transaction not working", HttpStatus.FORBIDDEN);
+      throw new Error("mdpost or postimage save not working");
     }
 
     mdcb(); imgcb();

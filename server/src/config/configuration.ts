@@ -12,5 +12,9 @@ export default ()=>({
     path: {
         image: "img",
         md: "markdown"   
+    },
+
+    auth: {
+        token_secret: process.env.TOKEN_SECRET,
     }
 })

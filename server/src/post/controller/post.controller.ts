@@ -1,21 +1,11 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  UploadedFiles,
-  Logger,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { PostService } from '../service/post.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { IsFile } from '@/util/is_file.pipe';
 import { TestService } from '@/test/test.service';
+import { Public } from '@/decorator/public.decorator';
 
 @Controller('post')
 export class PostController {
@@ -42,17 +32,24 @@ export class PostController {
     @Body() createPostDto: CreatePostDto
   ) {
     this.logger.debug("hello localhost/post");
-    console.log(files);
-    return this.postService.create(createPostDto, files);
+    // console.log(files);
+    try {
+      this.postService.create(createPostDto, files);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.FORBIDDEN);
+    }
+    return `success upload file`;
     // interceptor, uploaded 둘 다 file/files 구분한다.
   }
 
+  @Public()
   @Get('/all')
   findAll() {
     this.logger.debug("hello localhost/post/all");
     return this.postService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(
     @Param('id') id: number
@@ -70,7 +67,7 @@ export class PostController {
     @UploadedFiles(
       new IsFile(),
       // this.SaveFilePipe() //데코레이터 인자 안에서 this는 contorller와 다른 듯 하다.
-    ) files: {image ?: Array<Express.Multer.File>, md ?: Array<Express.Multer.File>},
+    ) files: { image?: Array<Express.Multer.File>, md?: Array<Express.Multer.File> },
     @Body() body: any
   ) {
     this.testService.hello();
@@ -90,5 +87,10 @@ export class PostController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postService.remove(+id);
+  }
+
+  @Get("test2")
+  async test2(){
+    return `global app guard test`;
   }
 }

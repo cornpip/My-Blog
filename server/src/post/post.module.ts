@@ -8,7 +8,6 @@ import { MulterPostConfig } from '@/util/multer_post_config';
 import { StreamController } from './controller/stream.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TestModule } from '@/test/test.module';
-import { TestService } from '@/test/test.service';
 
 @Module({
   imports: [

@@ -1,3 +1,4 @@
+import { Public } from '@/decorator/public.decorator';
 import { Body, Controller, Header, Logger, Post, StreamableFile } from '@nestjs/common';
 import { createReadStream, read } from 'fs';
 import { join } from 'path';
@@ -7,6 +8,7 @@ import { ReadFileDto } from '../dto';
 export class StreamController {
     private readonly logger = new Logger(StreamController.name);
 
+    @Public()
     @Post('/md')
     getFile(
         @Body("mdName") mdName: string
@@ -18,6 +20,7 @@ export class StreamController {
         return new StreamableFile(mdfile);
     }
 
+    @Public()
     @Post('/image')
     // @Header("Content-Type", "image/png") 기본은 octet
     getImage(
