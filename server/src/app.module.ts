@@ -12,12 +12,23 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/jwt_auth.guard';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
+      validationSchema: Joi.object({
+        MYSQL_HOST: Joi.string().required(),
+        MYSQL_PORT: Joi.number().required(),
+        MYSQL_USER: Joi.string().required(),
+        MYSQL_PASSWORD: Joi.string().required(),
+        MYSQL_DB: Joi.string().required(),
+        TOKEN_SECRET: Joi.string().required(),
+        SERVER_PORT: Joi.number().required(),
+        CORS_PORT: Joi.number().required(),
+      }),
     }),
     TypeOrmModule.forRootAsync({
       useClass: DbConfig

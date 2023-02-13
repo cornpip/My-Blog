@@ -1,11 +1,13 @@
 import { ValidationPipe, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: `http://localhost:${configService.get('server.cors_port')}`,
     methods: 'GET,POST,DELETE,PUT,PATCH,HEAD,OPTIONS',
     credentials: true,
   });
@@ -17,6 +19,6 @@ async function bootstrap() {
     })
   )
 
-  await app.listen(8000);
+  await app.listen(configService.get('server.port'));
 }
 bootstrap();

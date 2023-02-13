@@ -16,5 +16,10 @@ export default ()=>({
 
     auth: {
         token_secret: process.env.TOKEN_SECRET,
-    }
+    },
+
+    server: {
+        port: process.env.SERVER_PORT,
+        cors_port: process.env.CORS_PORT,
+    },
 })
