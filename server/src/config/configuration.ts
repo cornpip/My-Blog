@@ -15,11 +15,18 @@ export default ()=>({
     },
 
     auth: {
-        token_secret: process.env.TOKEN_SECRET,
+        acc_token_secret: process.env.ACC_TOKEN,
+        ref_token_secret: process.env.REF_TOKEN,
     },
 
     server: {
         port: process.env.SERVER_PORT,
         cors_port: process.env.CORS_PORT,
     },
+
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+        password: ""
+    }
 })

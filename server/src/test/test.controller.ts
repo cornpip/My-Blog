@@ -1,3 +1,4 @@
+import { Public } from '@/decorator/public.decorator';
 import { Controller ,Get } from '@nestjs/common';
 import { TestService } from './test.service';
 
@@ -12,5 +13,11 @@ export class TestController {
         this.testService.countup();
         this.testService.getcount();
         return
+    }
+
+    @Public()
+    @Get("/tt")
+    async testRedis(){
+        return `tt`;
     }
 }
