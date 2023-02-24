@@ -37,4 +37,4 @@ lerna-debug.log*
 ##
 .env
 markdown
-test*.**
+ts.**.ts

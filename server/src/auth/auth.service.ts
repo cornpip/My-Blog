@@ -1,6 +1,6 @@
 import { CheckUserDto } from '@/user/dto/check_user.dto';
 import { UserService } from '@/user/service/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as argon2 from "argon2";
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@/user/entities/user.entity';
@@ -8,6 +8,7 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { Response, Request } from 'express';
+import { JwtPayload } from '@/jwt/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -27,19 +28,20 @@ export class AuthService {
     }
 
     async login(user: User) {
-        const payload = { email: user.email, sub: user.id };
+        // const payload = { email: user.email, sub: user.id };
+        const payload: JwtPayload = { userId: user.id, email: user.email };
         const [acc_token, ref_token] = await Promise.all([
             this.jwtService.signAsync(payload, {
                 secret: this.configService.get("auth.acc_token_secret"),
-                expiresIn: "900s"
+                expiresIn: this.configService.get("auth.acc_expire_time")
             }),
             this.jwtService.signAsync(payload, {
                 secret: this.configService.get("auth.ref_token_secret"),
-                expiresIn: "43200",
+                expiresIn: this.configService.get("auth.ref_expire_time"),
             })
         ]);
         const total_token = `${acc_token},${ref_token}`; // 쉼표는 base64url에 없음
-        await this.redis.set(user.id.toString(), total_token, "EX", 10);
+        await this.redis.set(user.id.toString(), total_token, "EX", this.configService.get("auth.redis_expire_time"));
         return {
             access_token: acc_token,
             refresh_token: ref_token,
@@ -55,8 +57,35 @@ export class AuthService {
         return;
     }
 
-    async getToken(req: Request){
-        
-        return;
+    async getTokenData(token: string, secretkey: string) {
+        try {
+            const token_data = await this.jwtService.verifyAsync(token, { secret: secretkey });
+            return token_data;
+        } catch (e) {
+            throw new Error("token expiration");
+        }
+    }
+
+    async refresh(payload: JwtPayload) {
+        const new_token = await this.jwtService.signAsync(payload, {
+            secret: this.configService.get("auth.acc_token_secret"),
+            expiresIn: this.configService.get("auth.acc_expire_time")
+        });
+        return new_token;
+    }
+
+    /**
+     * 
+     * @param userId 
+     * @param token 
+     * @param flag access token validate=1, refresh token validate=2
+     * @returns success=true, fail=false
+     */
+    async validateToken(userId: number, token: string, flag: number){
+        const total_token = await this.redis.get(`${userId}`);
+        const [acc_token, ref_token] = total_token.split(",");
+        if(flag === 1) return token == acc_token;
+        else if(flag === 2) return token == ref_token;
+        throw new Error("validateToken function not working");
     }
 }

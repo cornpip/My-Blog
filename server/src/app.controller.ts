@@ -36,7 +36,6 @@ export class AppController {
     return;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get("profile")
   async profile(@Req() req: Request) {
     return;

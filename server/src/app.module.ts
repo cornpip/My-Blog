@@ -16,7 +16,8 @@ import * as Joi from 'joi';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisConfigService } from './config/redis.config';
 import { TokenMiddleware } from './middleware/token.middleware';
-import { JwtService } from '@nestjs/jwt';
+import { Test2Module } from './test2/test2.module';
+import { JwtCustomModule } from './jwt/jwt.module';
 
 @Module({
   imports: [
@@ -31,6 +32,9 @@ import { JwtService } from '@nestjs/jwt';
         MYSQL_DB: Joi.string().required(),
         ACC_TOKEN: Joi.string().required(),
         REF_TOKEN: Joi.string().required(),
+        ACC_EXPIRE_TIME: Joi.string().required(),
+        REF_EXPIRE_TIME: Joi.string().required(),
+        REDIS_EXPIRE_TIME: Joi.number().required(),
         SERVER_PORT: Joi.number().required(),
         CORS_PORT: Joi.number().required(),
         REDIS_HOST: Joi.string().required(),
@@ -47,8 +51,10 @@ import { JwtService } from '@nestjs/jwt';
     TestModule,
     UserModule,
     AuthModule,
+    Test2Module,
+    JwtCustomModule,
   ],
-  controllers: [AppController, TestController],
+  controllers: [AppController],
   providers: [
     AppService,
     {

@@ -13,7 +13,6 @@ export class PostController {
 
   constructor(
     private readonly postService: PostService,
-    private readonly testService: TestService
   ) { }
 
   @Post('/')
@@ -70,9 +69,6 @@ export class PostController {
     ) files: { image?: Array<Express.Multer.File>, md?: Array<Express.Multer.File> },
     @Body() body: any
   ) {
-    this.testService.hello();
-    this.testService.countup();
-    this.testService.getcount();
     // console.log(files);
     // logger.debug format 없이 다나온다. (buffer 같은거 foramt없이 다 출력)
     // this.logger.debug(files.image);

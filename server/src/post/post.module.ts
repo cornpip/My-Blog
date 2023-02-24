@@ -15,7 +15,6 @@ import { TestModule } from '@/test/test.module';
       MarkdownPost,
       PostImage,
     ]),
-    TestModule,
     // MulterModule.registerAsync({
     //   useClass: MulterPostConfig,
     // }),
