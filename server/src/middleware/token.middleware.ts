@@ -23,28 +23,27 @@ export class TokenMiddleware implements NestMiddleware {
         const refresh_token: string | undefined = req.cookies['refresh_token'];
         // 일단 acc는 redis랑 비교안하고 refresh만 비교하자
         // redis랑 비교 목적: 맞는 key로 임의로 자기들이 token을 만들어 요청하는 행위를 막으려고
-        if (!access_token) return next();
+        if (!access_token) return next(); //''빈 string도 걸림
         try {
             const access_data: JwtDecode = await this.authService.getTokenData(access_token, this.configService.get("auth.acc_token_secret"));
-            const expire_time: number = Math.floor(Date.now() / 1000) - access_data.exp;
-            console.log(expire_time);
-            if (expire_time >= 0) throw new Error("expired acc_token");
+            // const expire_time: number = Math.floor(Date.now() / 1000) - access_data.exp;
+            //만료되면 getTokenData에서 throw new error token expiration
         } catch (e) {
             try {
                 if (!refresh_token) return next();
                 const refresh_data: JwtDecode = await this.authService.getTokenData(refresh_token, this.configService.get("auth.ref_token_secret"));
-                const expire_time: number = Math.floor(Date.now() / 1000) - refresh_data.exp;
                 const pass = await this.authService.validateToken(refresh_data.userId, refresh_token, 2);
                 if (!pass) throw new Error("faked token");
-                if (expire_time < 0) {
-                    const re_access_token = await this.authService.refresh({
-                        userId: refresh_data.userId,
-                        email: refresh_data.email,
-                    });
-                    req.cookies["access_token"] = re_access_token;
-                    res.cookie("access_token", re_access_token, { httpOnly: true });
-                } else throw new Error("expired ref_token"); 
+                const re_access_token = await this.authService.refresh({
+                    userId: refresh_data.userId,
+                    email: refresh_data.email,
+                });
+                req.cookies["access_token"] = re_access_token;
+                res.cookie("access_token", re_access_token, { httpOnly: true });
             } catch (e) {
+                console.log("clear cookies");
+                res.clearCookie("access_token");
+                res.clearCookie("refresh_token");
                 throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
             }
         }

@@ -59,7 +59,7 @@ export default function Main(props: any) {
     <Grid
       item
       xs={12}
-      md={8}
+      md={9}
       sx={{
         '& .markdown': {
           py: 3,

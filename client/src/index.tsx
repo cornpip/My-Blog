@@ -1,18 +1,17 @@
 import ReactDOM from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from 'react-query'
-import './index.css';
+import './css/index.module.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-const queryClient = new QueryClient()
+import { ApiProvider } from "@reduxjs/toolkit/query/react";
+import { authApi } from './api/api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <QueryClientProvider client={queryClient}>
+  <ApiProvider api={authApi}>
     <App />
-  </QueryClientProvider>
+  </ApiProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

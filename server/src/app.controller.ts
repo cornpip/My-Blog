@@ -21,21 +21,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Public()
-  @UseGuards(LocalAuthGuard)
-  @Post("login")
-  async login(
-    @Req() req: Request,
-    @Res({passthrough: true}) res: Response,
-  ) {
-    // console.log("!!!", req.cookies);
-    const object_user: any = { ...req.user };
-    const req_user_dto: User = { ...object_user };
-    const { access_token, refresh_token } = await this.authService.login(req_user_dto);
-    await this.authService.setTokenCookie(res, {acc: access_token, ref: refresh_token});
-    return;
-  }
-
   @Get("profile")
   async profile(@Req() req: Request) {
     return;

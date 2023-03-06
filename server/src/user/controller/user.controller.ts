@@ -10,16 +10,4 @@ export class UserController {
     constructor(
         private readonly userService: UserService
     ){}
-
-    @Public()
-    @Post("/signup")
-    async signup(@Body() create_user_dto: CreateUserDto){
-        this.logger.debug("sing_up hello");
-        try{
-            await this.userService.signup(create_user_dto);
-        }catch(err){
-            throw new HttpException(err.message, HttpStatus.CONFLICT);
-        }
-        return `success sign up`;
-    }
 }

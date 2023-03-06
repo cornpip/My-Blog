@@ -12,6 +12,7 @@ import Main from '../component/Blog/Main';
 import Sidebar from '../component/Blog/Sidebar';
 import Footer from '../component/Blog/Footer';
 import { post1, post2, post3 } from '../markdown';
+import '../css/Blog.module.css';
 
 const sections = [
   { title: 'Ai', url: 'ai' },
@@ -75,7 +76,9 @@ const sidebar = {
   ],
 };
 
-const theme = createTheme();
+const theme = createTheme({
+  spacing: 8, //default값
+});
 
 let posts = [post1, post2, post3, "./markdown/hello.md"];
 // post = /react_io/static/media/blog-post.1.feffb8942bbd17649053.md
@@ -94,7 +97,7 @@ function Blog(props: test) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Header title={"Blog" + (chapter ? `_${chapter}`: ``)} sections={sections} />
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
@@ -103,7 +106,7 @@ function Blog(props: test) {
               <FeaturedPost key={post.title} post={post} />
             ))}
           </Grid>
-          <Grid container spacing={5} sx={{ mt: 3 }}>
+          <Grid container spacing={5} sx={{ mt: 3}}>
             <Main />
             <Sidebar
               title={sidebar.title}
