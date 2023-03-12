@@ -23,7 +23,7 @@ export default function Sidebar(props: SidebarProps) {
 
   return (
     <Grid item xs={12} md={3}>
-      <Grid item sx={{ position: 'sticky', top: (theme)=>theme.spacing(5) }}>
+      <Grid item sx={{ position: 'sticky', top: (theme)=>theme.spacing(10) }}>
         <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>
           <Typography variant="h6" gutterBottom>
             {title}

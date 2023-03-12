@@ -7,19 +7,11 @@ import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom'
 import Switch from '@mui/material/Switch';
 import AuthAPI from '../../api/auth';
-import { useGetAuthQuery } from '../../api/api';
 import BasicModal from '../Modal/BasicModal';
+import { BlogHeaderProps } from '../../interface/blog.interface';
+import Grid from '@mui/material/Grid';
 
-interface HeaderProps {
-  sections: ReadonlyArray<{
-    title: string;
-    url: string;
-  }>;
-  title: string;
-}
-
-
-export default function Header(props: HeaderProps) {
+export default function Header(props: BlogHeaderProps) {
   const { sections, title } = props;
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -42,12 +34,12 @@ export default function Header(props: HeaderProps) {
     return;
   }
 
-  async function yesHandler(){
+  async function yesHandler() {
     setOpen(false);
     logoutHandler();
   }
 
-  async function noHandler(){
+  async function noHandler() {
     setOpen(false);
   }
 
@@ -57,9 +49,8 @@ export default function Header(props: HeaderProps) {
       //login상태라면 모달창 띄우고 로그아웃하시겠습니까
       setOpen(true);
     } else {
-      navigate(`${process.env.REACT_APP_ROOT}/signin`);
       //logout상태라면 로그인page로
-
+      navigate(`${process.env.REACT_APP_ROOT}/signin`);
     }
     return;
   }
@@ -75,49 +66,89 @@ export default function Header(props: HeaderProps) {
     loginCheck();
   }, [])
 
-  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  //Switch관련
+  // All form controls should have labels, and this includes radio buttons, checkboxes, and switches.
+  // When a label can't be used, it's necessary to add an attribute directly to the input component.
+  // const label = { inputProps: { 'aria-label': 'Switch A' } };
+  // label tag 사용하자.
 
+
+  //grid로 바꾸자
   return (
-    <>
+    <Grid container>
       <BasicModal open={open} setOpen={setOpen} text={`
         Are you sure you want to log out?`} yesHandler={yesHandler} noHandler={noHandler} />
-      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Button size="medium">Contact</Button>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          align="center"
-          noWrap
-          sx={{ flex: 1 }}
-        >
-          {title}
-        </Typography>
-        <Switch {...label} defaultChecked color="secondary"
-          checked={login}
-          onChange={loginHandler} />
-        {/* <Switch {...label} defaultChecked color="warning"
-          onChange={logoutHandler} /> */}
-        <Switch {...label} defaultChecked
-          onChange={signinHandler} />
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-      </Toolbar>
-      <Toolbar
-        component="nav"
-        variant="dense"
-        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
-      >
-        {sections.map((section) => (
-          <Link
-            to={`./${section.title}`}
-            key={section.title}
+      <Grid item xs={12}>
+        <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Button size="medium">Contact</Button>
+          <Typography
+            component="h2"
+            variant="h5"
+            color="inherit"
+            align="center"
+            noWrap
+            sx={{ flex: 1 }}
           >
-            {section.title}
-          </Link>
+            {title}
+          </Typography>
+          <label>
+            <Switch color="secondary"
+              checked={login}
+              onChange={loginHandler} />
+          </label>
+          <Switch defaultChecked
+            onChange={signinHandler} />
+          <IconButton>
+            <SearchIcon />
+          </IconButton>
+        </Toolbar>
+      </Grid>
+      <Grid item xs={12}>
+        <Toolbar
+          component="nav"
+          variant="dense"
+          sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+        >
+          {sections.map((section) => (
+            <Link
+              to={`./${section.title}`}
+              key={section.title}
+            >
+              {section.title}
+            </Link>
+          ))}
+        </Toolbar>
+      </Grid>
+
+      <Grid container justifyContent="space-between" spacing={4}>
+        {sections.map((section) => (
+          <Grid item>
+            <Link
+              to={`./${section.title}`}
+              key={section.title}
+            >
+              {section.title}
+            </Link>
+          </Grid>
         ))}
-      </Toolbar>
-    </>
+      </Grid>
+    </Grid>
   );
 }
+
+
+
+{/* <Toolbar
+component="nav"
+variant="dense"
+sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+>
+{sections.map((section) => (
+  <Link
+    to={`./${section.title}`}
+    key={section.title}
+  >
+    {section.title}
+  </Link>
+))}
+</Toolbar> */}

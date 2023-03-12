@@ -4,7 +4,7 @@ import { PostController } from './controller/post.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MarkdownPost, PostImage } from './entities';
 import { MulterModule } from "@nestjs/platform-express"
-import { MulterPostConfig } from '@/util/multer_post_config';
+import { MulterPostConfig } from '@/config/multer_post.config';
 import { StreamController } from './controller/stream.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TestModule } from '@/test/test.module';

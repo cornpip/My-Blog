@@ -3,7 +3,7 @@ import { PostService } from '../service/post.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { IsFile } from '@/util/is_file.pipe';
+import { IsFile } from '@/pipe/is_file.pipe';
 import { TestService } from '@/test/test.service';
 import { Public } from '@/decorator/public.decorator';
 

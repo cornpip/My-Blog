@@ -3,13 +3,13 @@ import './css/index.module.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApiProvider } from "@reduxjs/toolkit/query/react";
-import { authApi } from './api/api';
+import { Api } from './api/api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <ApiProvider api={authApi}>
+  <ApiProvider api={Api}>
     <App />
   </ApiProvider>
 );

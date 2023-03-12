@@ -23,6 +23,8 @@ const PostFs = (
         return;
     };
     return [name, cb] as const
+    //as const써야 return type이 분리된다. readonly [string, () => void]
+    //안쓰면 (string | (() => void))[]
 }
 
 export { PostFs }

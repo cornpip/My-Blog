@@ -1,10 +1,7 @@
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { useEffect, useState } from 'react';
-import ReactMd from '../MarkDown/Reactmd';
-import PostAPI from '../../api/post';
-import { IPost } from "../../interface/post.interface"
+import { useGetAllPostQuery } from '../../api/api';
+import BasicPost from './BasicPost';
 
 // {
 //   "id": 1,
@@ -20,16 +17,9 @@ import { IPost } from "../../interface/post.interface"
 //   ]
 // },
 
-export default function Main(props: any) {
-  console.log('mainnnnnnnnnnnnnnn');
-  const [posts, setPosts] = useState<Array<IPost>>([]);
-  const [contents, setContents] = useState<Array<string>>([]);
-
-  function timeShow(time: string) {
-    const rtime = new Date(time);
-    return `${rtime.getFullYear()}-${(rtime.getMonth() + 1).toString().padStart(2, "0")}-${rtime.getDate().toString().padStart(2, "0")}`;
-  }
-
+export default function Main() {
+  console.log('@@@: Main');
+  const posts_query = useGetAllPostQuery({});
 
   async function sleep() {
     return new Promise((resolve, reject) => {
@@ -39,21 +29,6 @@ export default function Main(props: any) {
       }, 2000);
     })
   }
-
-  async function firstGet() {
-    try {
-      const t_posts = await PostAPI.getAll();
-      const t_contents = await PostAPI.getAllMd(t_posts);
-      setPosts(t_posts);
-      setContents(t_contents);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    firstGet();
-  }, [])
 
   return (
     <Grid
@@ -67,24 +42,14 @@ export default function Main(props: any) {
       }}
     >
       <Divider />
-      {
-        contents && contents.map((content, i) => {
-          console.log("markdown");
+      <>
+        {posts_query.isFetching ? "loading post" : ""}
+        {posts_query.data?.map((v, i) => {
           return (
-            <div key={content}>
-              <Typography variant="overline" sx={{}}>
-                {/* overline center 안먹힘 */}
-                {timeShow(posts[i].created)}
-              </Typography>
-              <Typography variant="h2" align="center" sx={{ mx: 2, mb: 2 }}>
-                {posts[i].featureTitle}
-              </Typography>
-              <ReactMd text={content} />
-              <Divider />
-            </div>
+            <BasicPost key={v.id} post={v} />
           )
-        })
-      }
+        })}
+      </>
     </Grid>
   );
 }

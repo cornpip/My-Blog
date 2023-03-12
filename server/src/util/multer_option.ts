@@ -3,6 +3,8 @@ import { diskStorage } from 'multer';
 import { existsSync, mkdirSync } from 'fs';
 import { extname, basename } from 'path';
 
+//FileFieldsInterceptor의 multer option으로 사용했다.
+
 // controller에 명시적이긴 하지만
 // 이렇게 사용하는 모듈은 nest의 관리에서 벗어났다.
 // 의존성 주입도 어렵고 그냥 express의 모듈이란 느낌

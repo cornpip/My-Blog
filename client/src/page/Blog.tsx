@@ -4,25 +4,17 @@ import Container from '@mui/material/Container';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import Header from '../component/Blog/Header';
 import MainFeaturedPost from '../component/Blog/MainFeaturedPost';
-import FeaturedPost from '../component/Blog/FeaturedPost';
 import Main from '../component/Blog/Main';
 import Sidebar from '../component/Blog/Sidebar';
 import Footer from '../component/Blog/Footer';
 import { post1, post2, post3 } from '../markdown';
 import '../css/Blog.module.css';
+import FeaturedBlock from '../component/Blog/FeaturedBlock';
+import ResponsiveAppBar from '../component/AppBar/ResponsiveAppBar';
 
-const sections = [
-  { title: 'Ai', url: 'ai' },
-  { title: 'Algorithm', url: '#' },
-  { title: 'Back-end', url: '#' },
-  { title: 'Front-end', url: '#' },
-  { title: 'DB', url: '#' },
-  { title: 'Git', url: '#' },
-  { title: 'Employment', url: '#' },
-];
 
 const mainFeaturedPost = {
   title: 'cornpip Blog',
@@ -32,25 +24,6 @@ const mainFeaturedPost = {
   imageText: 'main image description',
   linkText: 'Continue reading…',
 };
-
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageLabel: 'Image Text',
-  },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageLabel: 'Image Text',
-  },
-];
 
 const sidebar = {
   title: 'About',
@@ -76,12 +49,6 @@ const sidebar = {
   ],
 };
 
-const theme = createTheme({
-  spacing: 8, //default값
-});
-
-let posts = [post1, post2, post3, "./markdown/hello.md"];
-// post = /react_io/static/media/blog-post.1.feffb8942bbd17649053.md
 
 interface test{
   chapter :string
@@ -91,21 +58,23 @@ Blog.defaultProps = {
   chapter: ""
 }
 
-function Blog(props: test) {
+let theme = createTheme({
+  spacing: 8, //default값
+});
+theme = responsiveFontSizes(theme);
+
+export default function Blog(props: test) {
   const {chapter} = props;
-  console.log("bloggggggggg", chapter)
+  console.log("bloggggggggg", chapter);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth="xl">
-        <Header title={"Blog" + (chapter ? `_${chapter}`: ``)} sections={sections} />
+        {/* <Header title={"Blog" + (chapter ? `_${chapter}`: ``)} sections={sections} /> */}
+        <ResponsiveAppBar />
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
-          <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
-            ))}
-          </Grid>
+          <FeaturedBlock />
           <Grid container spacing={5} sx={{ mt: 3}}>
             <Main />
             <Sidebar
@@ -124,5 +93,3 @@ function Blog(props: test) {
     </ThemeProvider>
   );
 }
-
-export default Blog
