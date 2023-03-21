@@ -30,6 +30,7 @@ const AuthAPI = {
     },
     check: async function () {
         const res = await client.get('auth/check');
+        console.log(res);
         return res.data;
     }
 };

@@ -43,7 +43,7 @@ export class AuthController {
 
     @Public()
     @UseGuards(LocalAuthGuard)
-    @Post("login")
+    @Post("/login")
     async login(
         @Req() req: Request,
         @Res({ passthrough: true }) res: Response,
@@ -56,7 +56,7 @@ export class AuthController {
         return req_user_dto;
     }
 
-    @Get("logout")
+    @Get("/logout")
     async logout(
         @Res({ passthrough: true }) res: Response,
     ) {
@@ -65,8 +65,15 @@ export class AuthController {
         return true;
     }
 
-    @Get("check")
+    @Get("/check")
     async check() {
-        return true;
+        this.logger.debug("auth/check");
+        return `WTF2`;
+    }
+
+    @Get("/testing")
+    async testing() {
+        this.logger.debug("auth/check");
+        return { data: `HELLO` };
     }
 }

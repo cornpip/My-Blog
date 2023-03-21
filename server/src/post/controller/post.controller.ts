@@ -30,7 +30,7 @@ export class PostController {
     files: { image: Array<Express.Multer.File>, md: Array<Express.Multer.File> },
     @Body() createPostDto: CreatePostDto
   ) {
-    this.logger.debug("hello localhost/post");
+    this.logger.debug("post upload");
     // console.log(files);
     try {
       this.postService.create(createPostDto, files);
@@ -44,7 +44,7 @@ export class PostController {
   @Public()
   @Get('/all')
   findAll() {
-    this.logger.debug("hello localhost/post/all");
+    this.logger.debug("post/all");
     return this.postService.findAll();
   }
 
@@ -53,7 +53,7 @@ export class PostController {
   findOne(
     @Param('id') id: number
   ) {
-    this.logger.debug("##### get id");
+    this.logger.debug("post/:id");
     return this.postService.findOne(id);
   }
 

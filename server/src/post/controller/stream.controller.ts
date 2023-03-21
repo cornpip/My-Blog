@@ -13,7 +13,7 @@ export class StreamController {
     async getFile(
         @Param("name") name: string
     ){
-        this.logger.debug("hello file/md:name");
+        this.logger.debug("file/md:name");
         console.log(name);
         const mdfile_path = join("markdown", name);
 
@@ -47,6 +47,7 @@ export class StreamController {
     async getImage(
         @Param("name") name: string
     ) {
+        this.logger.debug("file/image:name");
         const image_path = join("img", name);
         try{
             await access(image_path);

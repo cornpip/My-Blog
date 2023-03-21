@@ -7,41 +7,40 @@ import CardMedia from '@mui/material/CardMedia';
 import { IPost } from '../../interface/post.interface';
 import { FeaturedPostProps } from '../../interface/blog.interface';
 import { timeShow } from '../../util/time.util';
-import { useGetImageQuery } from '../../api/api';
+import { useGetImageQuery, useGetMdQuery } from '../../api/api';
+import Box from '@mui/material/Box';
+import ReactMd from '../MarkDown/Reactmd';
 
 
 //post.mdNmae자리 = 설명 앞부분 가져와야함
 //post image가져오기
 export default function FeaturedPost({ post }: FeaturedPostProps) {
-  // const image_query = useGetImageQuery({ name: post.images[0].imageName });
   console.log("### FeautredPost", post);
-  // if (!image_query.isFetching) {
-  //   console.log("!!!!", image_query.data);
-  // }
+  const md_query = useGetMdQuery({ name: post.mdName });
   return (
-    <Grid item xs={12} md={6} >
-      <CardActionArea component="a" href="#">
-        <Card sx={{ display: 'flex' }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
+    <Grid item xs={12} sm={6} lg={4} >
+      <CardActionArea href={process.env.REACT_APP_ROOT + `/${post.id}`} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
+        <Card sx={{ flexDirection: 'column', display: 'flex' }}>
+          <CardMedia
+            component="img"
+            sx={{ height: { xs: 250, sm: 300, md: 320, lg: 340 } }}
+            image={`${process.env.REACT_APP_IMAGE}/${post.images[0].imageName}`}
+            alt={post.images[0].imageName}
+          />
+          <CardContent sx={{ flex: 1, textAlign: "center" }}>
+            <Typography component="h2" variant="h4">
               {post.featureTitle}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary">
               {timeShow(post.created)}
             </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {post.mdName}
-            </Typography>
-            <Typography variant="subtitle1" color="primary">
+            <Box sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>
+              <ReactMd text={md_query.data} />
+            </Box>
+            {/* <Typography variant="subtitle1" color="primary">
               Continue reading...
-            </Typography>
+            </Typography> */}
           </CardContent>
-          <CardMedia
-            component="img"
-            sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={`${process.env.REACT_APP_IMAGE}/${post.images[0].imageName}`}
-            alt={post.images[0].imageName}
-          />
         </Card>
       </CardActionArea>
     </Grid>

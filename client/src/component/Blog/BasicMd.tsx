@@ -5,7 +5,8 @@ import { BlogMdProps } from "../../interface/blog.interface";
 import { timeShow } from "../../util/time.util";
 import ReactMd from "../MarkDown/Reactmd";
 
-export default function BasicPost({ post }: BlogMdProps) {
+export default function BasicMd({ post }: BlogMdProps) {
+    // console.log("@@blogpost", post);
     const md_query = useGetMdQuery({ name: post.mdName });
     return (
         <>

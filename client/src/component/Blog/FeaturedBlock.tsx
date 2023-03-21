@@ -15,10 +15,10 @@ import FeaturedPost from "./FeaturedPost";
 export default function FeaturedBlock() {
     console.log("@@@: FeaturedBlock");
     const posts_query = useGetAllPostQuery({}); //caching으로 동작하는지 확인필요
-    const featured_count = 2;
+    const featured_count = 8;
 
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={5}>
             {posts_query.isFetching ? "loading post" : ""}
             {posts_query.data?.slice(0, featured_count).map((v,i)=>{
                 return <FeaturedPost key={v.id} post={v} />

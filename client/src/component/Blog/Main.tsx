@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { useGetAllPostQuery } from '../../api/api';
-import BasicPost from './BasicPost';
+import BasicMd from './BasicMd';
 
 // {
 //   "id": 1,
@@ -31,25 +31,16 @@ export default function Main() {
   }
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={9}
-      sx={{
-        '& .markdown': {
-          py: 3,
-        },
-      }}
-    >
+    <>
       <Divider />
       <>
         {posts_query.isFetching ? "loading post" : ""}
         {posts_query.data?.map((v, i) => {
           return (
-            <BasicPost key={v.id} post={v} />
+            <BasicMd key={v.id} post={v} />
           )
         })}
       </>
-    </Grid>
+    </>
   );
 }

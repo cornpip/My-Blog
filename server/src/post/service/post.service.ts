@@ -68,7 +68,8 @@ export class PostService {
         id: param_id
       },
     });
-    return res;
+    //id니까 무조건 하나
+    return res[0];
   }
 
   findFile(id: number) {

@@ -48,7 +48,7 @@ export default function Upload() {
         if (title && formData.has("md")) {
             formData.delete("feature_title"); //초기화
             formData.append("feature_title", title);
-            fetch("http://localhost:8000/post",
+            fetch(`${process.env.REACT_APP_SERVER}/post`,
                 {
                     method: "Post",
                     body: formData
