@@ -7,16 +7,15 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import AuthAPI from '../../api/auth';
 import BasicModal from '../Modal/BasicModal';
+import { useGetCheckQuery, useSetCheckMutation } from '../../api/api';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-interface AvatarLoginProps {
-    loginCheck: () => void;
-}
 
-export default function AvatarLogin({ loginCheck }: AvatarLoginProps) {
+export default function AvatarLogin() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [open, setOpen] = useState<boolean>(false);
+    const login_query = useGetCheckQuery({});
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -34,7 +33,8 @@ export default function AvatarLogin({ loginCheck }: AvatarLoginProps) {
     async function yesHandler() {
         setOpen(false);
         await AuthAPI.logout();
-        loginCheck(); //로그인 state계속 업데이트
+        //로그인 state계속 업데이트
+        login_query.refetch();
         return;
     }
 

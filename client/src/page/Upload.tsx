@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
+import PostAPI from '../api/post';
 
 export default function Upload() {
     //react의 변수관리를 usestate로 해야하는 이유
@@ -18,15 +19,16 @@ export default function Upload() {
     const [err, setErr] = useState(false);
     const [mdborder, setmdBorder] = useState({});
     const [imgborder, setimgBorder] = useState({});
+    const [fail, setFail] = useState(false);
     const navigate = useNavigate();
 
-    function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
+    async function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
         // console.log(e);
         //formdata 안에 값 getAll("프로퍼티") method로 확인가능, 그냥 console은 안나온다.
         console.log(formData.getAll("image"));
         console.log(formData.getAll("md"));
-        setmdBorder({}); setimgBorder({}); setErr(false);
-        
+        setmdBorder({}); setimgBorder({}); setErr(false); setFail(false);
+
         if (!title) setErr(true);
         else if (!formData.has("md")) {
             console.log("not md");
@@ -48,17 +50,17 @@ export default function Upload() {
         if (title && formData.has("md")) {
             formData.delete("feature_title"); //초기화
             formData.append("feature_title", title);
-            fetch(`${process.env.REACT_APP_SERVER}/post`,
-                {
-                    method: "Post",
-                    body: formData
-                })
-                .then(d => {
-                    console.log(d);
-                    navigate(`${process.env.REACT_APP_ROOT}`, {replace: true});
-                })
+            try {
+                await PostAPI.formSubmit(formData);
+                navigate(`${process.env.REACT_APP_ROOT}`, { replace: true });
+                // console.log("성공");
+            } catch (e) {
+                console.log(e);
+                setFail(true);
+            }
         }
     }
+
     function inputHandler(e: React.ChangeEvent<HTMLInputElement>, image: boolean) {
         const files = e.target.files;
         image ? formData.delete("image") : formData.delete("md"); //초기화
@@ -99,7 +101,7 @@ export default function Upload() {
                     </TextField>
                 </Grid>
                 <Grid xs={12} sx={imgborder}>
-                    <Typography variant='h6' component="span">
+                    <Typography variant='h6'>
                         Feature image
                     </Typography>
                     <Button
@@ -114,7 +116,7 @@ export default function Upload() {
                     <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
                 </Grid>
                 <Grid xs={12} sx={mdborder}>
-                    <Typography variant='h6' component="span">
+                    <Typography variant='h6'>
                         md File
                     </Typography>
                     <Button
@@ -128,9 +130,9 @@ export default function Upload() {
                     </Button>
                     <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesinfoMd} />
                 </Grid>
-                <Grid xs={12}
+                <Grid container
+                    xs={12}
                     sx={{ margin: 4 }}
-                    container
                     // alignItems="center" 세로축
                     justifyContent="center">
                     <Button
@@ -140,6 +142,18 @@ export default function Upload() {
                         onClick={submitHandler}>
                         submit
                     </Button>
+                </Grid>
+                <Grid container
+                    xs={12}
+                    justifyContent="center">
+                    {fail ? <Typography variant='h6' 
+                    sx={{ color: "#990066", 
+                    border: 1, 
+                    borderRadius:2, 
+                    borderColor: "#990066",
+                    padding: 1 }}>
+                        try again
+                    </Typography> : "" }
                 </Grid>
             </Grid>
         </Container>

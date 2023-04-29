@@ -10,16 +10,22 @@ import { timeShow } from '../../util/time.util';
 import { useGetImageQuery, useGetMdQuery } from '../../api/api';
 import Box from '@mui/material/Box';
 import ReactMd from '../MarkDown/Reactmd';
+import { useNavigate } from 'react-router-dom';
 
 
 //post.mdNmae자리 = 설명 앞부분 가져와야함
 //post image가져오기
 export default function FeaturedPost({ post }: FeaturedPostProps) {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(process.env.REACT_APP_ROOT + `/post/${post.id}`)
+  };
+
   console.log("### FeautredPost", post);
   const md_query = useGetMdQuery({ name: post.mdName });
   return (
     <Grid item xs={12} sm={6} lg={4} >
-      <CardActionArea href={process.env.REACT_APP_ROOT + `/${post.id}`} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
+      <CardActionArea onClick={handleNavigate} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
         <Card sx={{ flexDirection: 'column', display: 'flex' }}>
           <CardMedia
             component="img"

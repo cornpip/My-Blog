@@ -1,4 +1,6 @@
+import axios from "axios";
 import { IPost } from "../interface/post.interface"
+import { clientForm } from "./axios";
 
 async function getMd(url: string, data: object) {
     const response = await fetch(url, {
@@ -12,6 +14,11 @@ async function getMd(url: string, data: object) {
 }
 
 const PostAPI = {
+    formSubmit: async (form: any) => {
+        const res = await clientForm.post("post", form);
+        // console.log(res);
+        return res;
+    },
     getAll: async (): Promise<Array<IPost>> => {
         const url = `${process.env.REACT_APP_SERVER}/post/all`;
         const res = await fetch(url).then(r => r.json());

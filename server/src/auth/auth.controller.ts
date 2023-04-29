@@ -68,12 +68,13 @@ export class AuthController {
     @Get("/check")
     async check() {
         this.logger.debug("auth/check");
-        return `WTF2`;
+        return `PASS`;
     }
 
+    @Public()
     @Get("/testing")
     async testing() {
         this.logger.debug("auth/check");
-        return { data: `HELLO` };
+        return `LOL`;
     }
 }

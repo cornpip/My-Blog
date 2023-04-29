@@ -1,4 +1,4 @@
-import client from "./axios";
+import { client } from "./axios";
 import { SignInUser } from "../interface/auth.interface";
 
 const AuthAPI = {

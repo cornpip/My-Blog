@@ -8,13 +8,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./page/Signin";
 import Post from "./page/Post";
 
-const root_path = "/react_io"
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={process.env.REACT_APP_ROOT + "/:postId"} element={<Post />} />
+        <Route path={process.env.REACT_APP_ROOT + "/post/:postId"} element={<Post />} />
         <Route path={process.env.REACT_APP_ROOT} element={<Blog />} />
         <Route path={process.env.REACT_APP_ROOT + "/ai"} element={<Ai />} />
         <Route path={process.env.REACT_APP_ROOT + "/upload"} element={<Upload />}/>

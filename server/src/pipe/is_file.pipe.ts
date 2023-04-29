@@ -9,7 +9,7 @@ export class IsFile implements PipeTransform {
 
     transform(value: { image?: Array<Express.Multer.File>, md?: Array<Express.Multer.File> }, metadata: ArgumentMetadata) {
         // 2개 다 들어왔냐
-        // console.log(value);
+        console.log(value);
         if (!value.md || !value.image) {
             this.logger.log("### Pipe : Bad request")
             throw new HttpException('mdfile and image are required', HttpStatus.BAD_REQUEST);

@@ -8,4 +8,13 @@ const client = axios.create({
     },
 });
 
-export default client;
+const clientForm = axios.create({
+    baseURL: process.env.REACT_APP_SERVER,
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+})
+
+export { client, clientForm };
+// export default client
