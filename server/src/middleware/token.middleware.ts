@@ -1,5 +1,5 @@
 import { AuthService } from '@/auth/auth.service';
-import { JwtDecode } from '@/jwt/jwt-decode.interface';
+import { JwtDecode } from '@/jwt/jwt.interface';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { HttpException, HttpStatus, Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

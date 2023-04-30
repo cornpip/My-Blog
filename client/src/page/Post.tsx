@@ -7,10 +7,12 @@ import Sidebar from "../component/Blog/Sidebar";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import BasicPost from "../component/Blog/BasicMd";
 import { useGetIdPostQuery } from "../api/api";
-import Main from "../component/Blog/Main";
 import BasicMd from "../component/Blog/BasicMd";
+import ResponsiveAppBar from "../component/AppBar/ResponsiveAppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Footer from "../component/Blog/Footer";
+import Loading from "./Loading";
 
 const sidebar = {
     title: 'About',
@@ -48,8 +50,9 @@ export default function Post() {
     return (
         <>
             <CssBaseline />
-
-            <Grid container spacing={5} sx={{ mt: 3 }}>
+            <ResponsiveAppBar />
+            <Toolbar />
+            <Grid container spacing={5} sx={{ mt: 0 }}>
                 <Grid item xs={12} md={2}>
                     <BasicCard />
                 </Grid>
@@ -58,8 +61,7 @@ export default function Post() {
                         py: 3,
                     },
                 }}>
-                    {post_query.isFetching ? "loading markdown" :  ""}
-                    {post_query.data && <BasicMd post={post_query.data} />}
+                    {post_query.isLoading ? <Loading /> : post_query.data ? <BasicMd post={post_query.data} /> : "Fail"}
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <Sidebar
@@ -70,6 +72,10 @@ export default function Post() {
                     />
                 </Grid>
             </Grid>
+            <Footer
+                title="Footer"
+                description="Something here to give the footer a purpose!"
+            />
         </>
     )
 }

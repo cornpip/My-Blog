@@ -8,7 +8,7 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { Response, Request } from 'express';
-import { JwtPayload } from '@/jwt/jwt-payload.interface';
+import { JwtPayload } from '@/jwt/jwt.interface';
 
 @Injectable()
 export class AuthService {

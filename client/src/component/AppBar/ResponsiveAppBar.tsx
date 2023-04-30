@@ -10,7 +10,7 @@ import SearchBasic from './SearchBasic';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 import { useGetCheckQuery } from '../../api/api';
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 
 
 interface Props {
@@ -45,14 +45,15 @@ function ResponsiveAppBar() {
     return (
         <HideOnScroll>
             <AppBar>
-                <Container maxWidth="xl">
+                <Container maxWidth={false} sx={{ maxWidth: { md: "90%" } }}>
                     <Toolbar disableGutters>
                         <AppBarXs />
                         <AppBarMd />
                         {/* <SearchBasic /> */}
                         <Box sx={{ flexGrow: 0 }}>
-                            {/* {login_query.data ? <AvatarLogin loginCheck={loginCheck} /> : ""} */}
-                            {login_query.error ? <AvatarAnonymous /> : <AvatarLogin />}
+                            {login_query.isLoading ?
+                                <CircularProgress color='inherit' />
+                                : login_query.error ? <AvatarAnonymous /> : <AvatarLogin />}
                         </Box>
                     </Toolbar>
                 </Container>

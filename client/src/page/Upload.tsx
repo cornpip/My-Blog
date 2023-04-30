@@ -7,6 +7,10 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
 import PostAPI from '../api/post';
+import { useGetCheckQuery } from '../api/api';
+import NoAuth from './NoAuth';
+import Loading from './Loading';
+import Footer from '../component/Blog/Footer';
 
 export default function Upload() {
     //react의 변수관리를 usestate로 해야하는 이유
@@ -21,6 +25,7 @@ export default function Upload() {
     const [imgborder, setimgBorder] = useState({});
     const [fail, setFail] = useState(false);
     const navigate = useNavigate();
+    const login_query = useGetCheckQuery({});
 
     async function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
         // console.log(e);
@@ -86,76 +91,85 @@ export default function Upload() {
     }
 
     return (
-        <Container>
-            <Grid container spacing={2}>
-                <Grid xs={12}>
-                    <Typography variant="h2"> Upload Page </Typography>
-                </Grid>
-                <Grid xs={12}>
-                    <TextField
-                        error={err}
-                        fullWidth id="filled-basic"
-                        label="feature title"
-                        variant="standard"
-                        onChange={texthandler}>
-                    </TextField>
-                </Grid>
-                <Grid xs={12} sx={imgborder}>
-                    <Typography variant='h6'>
-                        Feature image
-                    </Typography>
-                    <Button
-                        color="secondary"
-                        variant='contained'
-                        component="label"
-                        sx={{ margin: 2 }}
-                    >
-                        upload
-                        <input hidden multiple type="file" onChange={(e) => inputHandler(e, true)} />
-                    </Button>
-                    <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
-                </Grid>
-                <Grid xs={12} sx={mdborder}>
-                    <Typography variant='h6'>
-                        md File
-                    </Typography>
-                    <Button
-                        color="secondary"
-                        variant='contained'
-                        component="label"
-                        sx={{ margin: 2 }}
-                    >
-                        upload
-                        <input hidden multiple type="file" onChange={(e) => inputHandler(e, false)} />
-                    </Button>
-                    <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesinfoMd} />
-                </Grid>
-                <Grid container
-                    xs={12}
-                    sx={{ margin: 4 }}
-                    // alignItems="center" 세로축
-                    justifyContent="center">
-                    <Button
-                        size="large"
-                        variant='contained'
-                        color='success'
-                        onClick={submitHandler}>
-                        submit
-                    </Button>
-                </Grid>
-                <Grid container
-                    xs={12}
-                    justifyContent="center">
-                    {fail ? <Typography variant='h6' 
-                    sx={{ color: "#990066", 
-                    border: 1, 
-                    borderRadius:2, 
-                    borderColor: "#990066",
-                    padding: 1 }}>
-                        try again
-                    </Typography> : "" }
-                </Grid>
-            </Grid>
-        </Container>
+        <>
+            {login_query.isLoading ? <Loading /> : login_query.error ? <NoAuth /> :
+                <Container>
+                    <Grid container spacing={2}>
+                        <Grid xs={12}>
+                            <Typography variant="h2"> Upload Page </Typography>
+                        </Grid>
+                        <Grid xs={12}>
+                            <TextField
+                                error={err}
+                                fullWidth id="filled-basic"
+                                label="feature title"
+                                variant="standard"
+                                onChange={texthandler}>
+                            </TextField>
+                        </Grid>
+                        <Grid xs={12} sx={imgborder}>
+                            <Typography variant='h6'>
+                                Feature image
+                            </Typography>
+                            <Button
+                                color="secondary"
+                                variant='contained'
+                                component="label"
+                                sx={{ margin: 2 }}
+                            >
+                                upload
+                                <input hidden multiple type="file" onChange={(e) => inputHandler(e, true)} />
+                            </Button>
+                            <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
+                        </Grid>
+                        <Grid xs={12} sx={mdborder}>
+                            <Typography variant='h6'>
+                                md File
+                            </Typography>
+                            <Button
+                                color="secondary"
+                                variant='contained'
+                                component="label"
+                                sx={{ margin: 2 }}
+                            >
+                                upload
+                                <input hidden multiple type="file" onChange={(e) => inputHandler(e, false)} />
+                            </Button>
+                            <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesinfoMd} />
+                        </Grid>
+                        <Grid container
+                            xs={12}
+                            sx={{ margin: 4 }}
+                            // alignItems="center" 세로축
+                            justifyContent="center">
+                            <Button
+                                size="large"
+                                variant='contained'
+                                color='success'
+                                onClick={submitHandler}>
+                                submit
+                            </Button>
+                        </Grid>
+                        <Grid container
+                            xs={12}
+                            justifyContent="center">
+                            {fail ? <Typography variant='h6'
+                                sx={{
+                                    color: "#990066",
+                                    border: 1,
+                                    borderRadius: 2,
+                                    borderColor: "#990066",
+                                    padding: 1
+                                }}>
+                                try again
+                            </Typography> : ""}
+                        </Grid>
+                    </Grid>
+                    <Footer
+                        title="Footer"
+                        description="Something here to give the footer a purpose!"
+                    />
+                </Container>}
+        </>
     )
 }

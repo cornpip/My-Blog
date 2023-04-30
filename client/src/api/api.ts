@@ -88,7 +88,7 @@ export const Api = createApi({
             //여기도 마찬가지로 처리해도 reject는 반영안됨
             transformErrorResponse: (baseQueryReturnValue, meta, arg) => {
                 console.log("@@@ getcheck transformError", baseQueryReturnValue, meta, arg);
-                return 200;
+                return {originalArgs: `success`, err: "err2"};
             },
             providesTags: (result, err, arg) => {
                 // console.log("@@@ getcheck providesTags", result);

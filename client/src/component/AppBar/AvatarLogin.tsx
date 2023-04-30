@@ -8,14 +8,17 @@ import { useState } from 'react';
 import AuthAPI from '../../api/auth';
 import BasicModal from '../Modal/BasicModal';
 import { useGetCheckQuery, useSetCheckMutation } from '../../api/api';
+import Divider from '@mui/material/Divider';
+import { useNavigate } from 'react-router-dom';
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const menuSetting = ['Profile', 'Account', 'Dashboard', 'Posting', 'Logout'];
 
 export default function AvatarLogin() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [open, setOpen] = useState<boolean>(false);
     const login_query = useGetCheckQuery({});
+    const navigate = useNavigate();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -25,7 +28,7 @@ export default function AvatarLogin() {
         setAnchorElUser(null);
     };
 
-    async function handleLogout() {
+    async function logoutHandler() {
         setOpen(true);
         return;
     }
@@ -42,6 +45,10 @@ export default function AvatarLogin() {
         setOpen(false);
     }
 
+    async function postHandler(){
+        navigate(process.env.REACT_APP_ROOT + `/upload`);
+    }
+
     return (
         <>
             <BasicModal open={open} setOpen={setOpen} text={`
@@ -52,11 +59,11 @@ export default function AvatarLogin() {
                 </IconButton>
             </Tooltip>
             <Menu
-                sx={{ mt: '45px' }}
+                sx={{ mt: { sx: 0, sm: 1 } }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                    vertical: 'top',
+                    vertical: 'bottom',
                     horizontal: 'right',
                 }}
                 keepMounted
@@ -67,9 +74,28 @@ export default function AvatarLogin() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem key="Logout" onClick={handleLogout}>
+                {/* <MenuItem key="Logout" onClick={logoutHandler}>
                     <Typography textAlign="center">LOGOUT</Typography>
                 </MenuItem>
+                <MenuItem key="Logout" onClick={logoutHandler}>
+                    <Typography textAlign="center">LOGOUT</Typography>
+                </MenuItem>
+                <MenuItem key="Logout" onClick={logoutHandler}>
+                    <Typography textAlign="center">LOGOUT</Typography>
+                </MenuItem> */}
+                {menuSetting.map((menu) => {
+                    let clickEvent = ()=>{};
+                    const u_menu = menu.toUpperCase();
+                    
+                    if(u_menu == "LOGOUT") clickEvent = logoutHandler;
+                    if(u_menu == "POSTING") clickEvent = postHandler;
+                    return (
+                        <MenuItem key={menu} onClick={clickEvent}>
+                            <Typography textAlign="center">{menu}</Typography>
+                        </MenuItem>
+                    )
+                })}
+                {/* <Divider /> */}
             </Menu>
         </>
     )

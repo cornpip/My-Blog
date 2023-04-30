@@ -66,15 +66,20 @@ export class AuthController {
     }
 
     @Get("/check")
-    async check() {
+    async check(
+        @Req() req: Request,
+    ) {
         this.logger.debug("auth/check");
+        // console.log(req.user);
         return `PASS`;
     }
 
-    @Public()
+    // @Public()
     @Get("/testing")
-    async testing() {
-        this.logger.debug("auth/check");
+    async testing(
+        @Req() req: Request,
+    ) {
+        this.logger.debug("auth/testing");
         return `LOL`;
     }
 }

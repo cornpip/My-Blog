@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { useGetAllPostQuery } from "../../api/api";
 import FeaturedPost from "./FeaturedPost";
+import Loading from "../../page/Loading";
 
 
 // {
@@ -19,7 +20,7 @@ export default function FeaturedBlock() {
 
     return (
         <Grid container spacing={5}>
-            {posts_query.isFetching ? "loading post" : ""}
+            {posts_query.isLoading ? <Loading /> : ""}
             {posts_query.data?.slice(0, featured_count).map((v,i)=>{
                 return <FeaturedPost key={v.id} post={v} />
             })}
