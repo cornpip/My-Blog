@@ -1,6 +1,6 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { Theme, createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 import BasicCard from "../component/Blog/BasicCard";
 import Sidebar from "../component/Blog/Sidebar";
@@ -13,6 +13,7 @@ import ResponsiveAppBar from "../component/AppBar/ResponsiveAppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Footer from "../component/Blog/Footer";
 import Loading from "./Loading";
+import Box from "@mui/material/Box";
 
 const sidebar = {
     title: 'About',
@@ -52,7 +53,60 @@ export default function Post() {
             <CssBaseline />
             <ResponsiveAppBar />
             <Toolbar />
-            <Grid container spacing={5} sx={{ mt: 0 }}>
+            <Grid container direction="row" spacing={{ xs: 2, sm: 3, lg: 4, xl: 5 }} sx={{ pt:{ xs: 2, sm: 3, lg: 4, xl: 5 } }}>
+                <Grid item xs={12} md={2}>
+                    <BasicCard customSx={{
+                        position: "sticky",
+                        top: (theme: Theme) => theme.spacing(3),
+                    }} />
+                </Grid>
+                <Grid item container spacing={0} xs={12} md={8}>
+                    <Grid item container xs={12} sx={{ justifyContent: "center" }}>
+                        {post_query.isLoading ? <Loading /> : post_query.data ? <Box
+                            component="img"
+                            sx={{
+                                height: { md: 340 },
+                                objectFit: "contain"
+                            }}
+                            alt={`${post_query.data?.images[0].imageName}`}
+                            src={`${process.env.REACT_APP_IMAGE}/${post_query.data?.images[0].imageName}`}
+                        /> : "Fail"}
+                    </Grid>
+                    <Grid item xs={12} sx={{
+                        '& .markdown': {
+                            py: 3,
+                        },
+                    }}>
+                        {post_query.isLoading ? <Loading /> : post_query.data ? <BasicMd post={post_query.data} /> : "Fail"}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <Sidebar
+                        title={sidebar.title}
+                        description={sidebar.description}
+                        archives={sidebar.archives}
+                        social={sidebar.social}
+                        customSx={{
+                            position: "sticky",
+                            top: (theme: Theme) => theme.spacing(3),
+                        }}
+                    />
+                </Grid>
+            </Grid>
+
+
+            {/* <Grid container spacing={5} sx={{ mt: 0 }}>
+                <Grid item container xs={12} md={12} sx={{ justifyContent: "center" }}>
+                    <Box
+                        component="img"
+                        sx={{
+                            height: { xs: 250, sm: 300, md: 320, lg: 340 },
+                            objectFit: "contain"
+                        }}
+                        alt="The house from the offer."
+                        src={`${process.env.REACT_APP_IMAGE}/${post_query.data?.images[0].imageName}`}
+                    />
+                </Grid>
                 <Grid item xs={12} md={2}>
                     <BasicCard />
                 </Grid>
@@ -71,7 +125,7 @@ export default function Post() {
                         social={sidebar.social}
                     />
                 </Grid>
-            </Grid>
+            </Grid> */}
             <Footer
                 title="Footer"
                 description="Something here to give the footer a purpose!"

@@ -4,21 +4,28 @@ import { useEffect } from 'react';
 // import useGetAll from '../api/query/useGetAll';
 import PostAPI from '../api/post';
 
-function Test(){
-    async function tt(){
+function Test() {
+    async function tt() {
         const res = await PostAPI.getAll();
-        console.log("test page:",res);
+        console.log("test page:", res);
         console.log("@@@", res[0].created);
         return
     }
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         tt();
     }, [])
 
-    return(
+    return (
         <Container>
             <Typography variant='h2'>Test Page</Typography>
+            <code>
+                bla bla bla bla
+                <h1>
+                    Hello
+                </h1>
+                + one
+            </code>
         </Container>
     )
 }

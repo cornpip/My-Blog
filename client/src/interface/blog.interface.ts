@@ -15,3 +15,7 @@ export interface BlogHeaderProps {
     }>;
     title: string;
 }
+
+export interface CustomSxProps {
+    customSx?: object;
+}

@@ -1,15 +1,15 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { CustomSxProps } from '../../interface/blog.interface';
 
-
-export default function BasicCard() {
+export default function BasicCard(props: CustomSxProps) {
+    const { customSx } = props;
     return (
         <Card sx={{
-            borderRadius: "20%", maxHeight: { "xs":100, "sm":200, "md": 700, "lg": 800 }
+            borderRadius: "20%", maxHeight: { "xs":100, "sm":200, "md": 700, "lg": 800 },
+            ...customSx,
         }}>
             <CardContent>
                 <Typography variant="h1" component="div">

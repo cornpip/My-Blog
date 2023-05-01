@@ -58,6 +58,7 @@ export default function Upload() {
             try {
                 await PostAPI.formSubmit(formData);
                 navigate(`${process.env.REACT_APP_ROOT}`, { replace: true });
+                window.location.reload();
                 // console.log("성공");
             } catch (e) {
                 console.log(e);
