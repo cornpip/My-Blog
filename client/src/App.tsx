@@ -2,7 +2,7 @@ import "./css/App.module.css";
 import Blog from "./page/Blog";
 import Ai from "./page/Ai";
 import Upload from "./page/Upload"
-import Test from "./page/Test";
+// import Test from "./page/Test";
 import Edit from "./page/Edit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./page/Signin";
@@ -24,7 +24,7 @@ function App() {
 
         <Route path={process.env.REACT_APP_ROOT + "*"} element={<NoPage />} />
         <Route path={"*"} element={<NoPage />} />
-        <Route path="/test" element={<Test />} />
+        {/* <Route path="/test" element={<Test />} /> */}
       </Routes>
     </BrowserRouter>
   );

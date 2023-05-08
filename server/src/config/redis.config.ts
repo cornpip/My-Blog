@@ -12,9 +12,9 @@ export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         return {
             config: {
-                host: this.configService.get<string>('REDIS_HOSTNAME'),
-                port: this.configService.get<number>('REDIS_PORT'),
-                password: this.configService.get<string>('REDIS_PASSWORD'),
+                host: this.configService.get<string>('redis.host'),
+                port: this.configService.get<number>('redis.port'),
+                password: this.configService.get<string>('redis.password'),
             },
         };
     }

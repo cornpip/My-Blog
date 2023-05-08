@@ -2,31 +2,52 @@ version: '3.7'
 
 services:
   db:
-    image: mysql:latest
+    image: mysql:8.0.33-oracle
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ioblog
+    command: mysqld --lower_case_table_names=1
     volumes:
-      - type: bind
-        source: C:\ProgramData\MySQL\MySQL Server 8.0\Data
-        target: /var/lib/mysql
-        consistency: consistent
-        read_only: false
-    user: "1000:1000"
-  
+      - ./db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--password=${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   redis:
-    image: redis:latest
+    image: redis:7.0.11-bullseye
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   app:
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     image: node:lts-alpine3.16
     ports:
-      - 7999:8000
-    command: sh -c 'cd ioblog && ls && node app.js'
+      - 8080:8000
+    command: sh -c 'cd ioblog/server && npm i && npm run start:dev'
+    # command: sh -c 'cd ioblog/test && npm i && node app.js'
     volumes:
       - ./:/ioblog
+
+    # condition: service_started
+
+# volumes:
+#   - type: bind
+#     source: C:\ProgramData\MySQL\MySQL Server 8.0\Data
+#     target: /var/lib/mysql
+#     consistency: consistent
+#     read_only: false
+# user: "1000:1000"
 
 # volumes:
 #   db_data:
