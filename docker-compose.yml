@@ -9,7 +9,7 @@ services:
       MYSQL_DATABASE: ioblog
     command: mysqld --lower_case_table_names=1
     volumes:
-      - ./db_data:/var/lib/mysql
+      - ./ioblog_backup.sql:/ioblog_backup.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--password=${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -34,11 +34,11 @@ services:
     image: node:lts-alpine3.16
     ports:
       - 8080:8000
-    command: sh -c 'cd ioblog/server && npm i && npm run start:dev'
-    # command: sh -c 'cd ioblog/test && npm i && node app.js'
+    command: sh -c 'cd ioblog/server && npm i && npm run start:prod'
     volumes:
       - ./:/ioblog
 
+    # command: sh -c 'cd ioblog/server && npm i && npm run start:prod'
     # condition: service_started
 
 # volumes:

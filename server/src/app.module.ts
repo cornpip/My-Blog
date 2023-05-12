@@ -41,6 +41,7 @@ import { WinstonConfig } from './config/winston.config';
         CORS_PORT: Joi.number().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        PRODUCTION: Joi.number().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({

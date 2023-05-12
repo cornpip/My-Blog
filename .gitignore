@@ -1,8 +1,8 @@
 ##
-check
 img
-redis/*
-redis_client/*
-test
 .env
 node_modules
+db_data
+*.txt
+*.sql
+*.pem
