@@ -18,6 +18,8 @@ import { RedisConfigService } from './config/redis.config';
 import { TokenMiddleware } from './middleware/token.middleware';
 import { Test2Module } from './test2/test2.module';
 import { JwtCustomModule } from './jwt/jwt.module';
+import { WinstonModule } from 'nest-winston';
+import { WinstonConfig } from './config/winston.config';
 
 @Module({
   imports: [
@@ -46,6 +48,9 @@ import { JwtCustomModule } from './jwt/jwt.module';
     }),
     RedisModule.forRootAsync({
       useClass: RedisConfigService
+    }),
+    WinstonModule.forRootAsync({
+      useClass: WinstonConfig
     }),
     PostModule,
     TestModule,

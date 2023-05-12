@@ -5,3 +5,4 @@ redis/*
 redis_client/*
 test
 .env
+node_modules

@@ -74,7 +74,7 @@ export class AuthController {
         return `PASS`;
     }
 
-    // @Public()
+    @Public()
     @Get("/testing")
     async testing(
         @Req() req: Request,
