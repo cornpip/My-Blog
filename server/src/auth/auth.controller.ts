@@ -60,8 +60,8 @@ export class AuthController {
     async logout(
         @Res({ passthrough: true }) res: Response,
     ) {
-        res.clearCookie("access_token");
-        res.clearCookie("refresh_token");
+        res.clearCookie("access_token", { httpOnly: true, sameSite:"none", secure:true });
+        res.clearCookie("refresh_token", { httpOnly: true, sameSite:"none", secure:true });
         return true;
     }
 

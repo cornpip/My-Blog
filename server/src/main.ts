@@ -28,6 +28,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: `http://localhost:${configService.get('server.cors_port')}`,
+    // origin: `https://cornpip.github.io`,
     methods: 'GET,POST,DELETE,PUT,PATCH,HEAD,OPTIONS',
     credentials: true,
   });
