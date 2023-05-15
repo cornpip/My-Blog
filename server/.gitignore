@@ -38,3 +38,8 @@ lerna-debug.log*
 .env
 markdown
 ts.**.ts
+
+!secrets/
+secrets/*
+!secrets/privatekey
+!secrets/certificatekey

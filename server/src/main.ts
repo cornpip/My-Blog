@@ -4,13 +4,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import * as fs from 'fs';
+import * as path from 'path';
 declare const module: any;
 
 async function bootstrap() {
+  const private_path = path.resolve(__dirname, "../secrets", "private.key");
+  const certificate_path = path.resolve(__dirname, "../secrets", "certificate.crt");
+  const httpsOptions =  {
+    key: fs.readFileSync(private_path),
+    cert: fs.readFileSync(certificate_path),
+  }
+  
   // const production = +process.env.PRODUCTION;
   // const log_level: Array<LogLevel> = production ? ['log', 'error', 'warn'] : ['log', 'error', 'warn', 'debug', 'verbose'];
   const app = await NestFactory.create(AppModule, {
     // logger: log_level,
+    httpsOptions,
   });
   //winston config level로 따라간다.
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));

@@ -52,8 +52,8 @@ export class AuthService {
         res: Response,
         token: { acc: string, ref: string }
     ) {
-        res.cookie("access_token", token.acc, { httpOnly: true });
-        res.cookie("refresh_token", token.ref, { httpOnly: true });
+        res.cookie("access_token", token.acc, { httpOnly: true, sameSite:"none", secure:true });
+        res.cookie("refresh_token", token.ref, { httpOnly: true, sameSite:"none", secure:true });
         return;
     }
 
