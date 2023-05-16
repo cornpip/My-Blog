@@ -57,7 +57,7 @@ export default function Upload() {
             formData.append("feature_title", title);
             try {
                 await PostAPI.formSubmit(formData);
-                navigate(`${process.env.REACT_APP_ROOT}`, { replace: true });
+                navigate(`${process.env.REACT_APP_ROOT2}`, { replace: true });
                 window.location.reload();
                 // console.log("성공");
             } catch (e) {

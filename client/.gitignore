@@ -26,3 +26,8 @@ yarn-error.log*
 .env
 src/api/query
 Test.tsx
+
+!secrets/
+secrets/*
+!secrets/privatekey
+!secrets/certificatekey

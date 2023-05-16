@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-syntax-highlighter": "^15.5.6",
     "axios": "^1.3.4",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
@@ -34,6 +35,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:https": "set HTTPS=true&&set SSL_CRT_FILE=./secrets/certificate.crt&&set SSL_KEY_FILE=./secrets/private.key&&react-scripts start",
+    "start:prod": "HTTPS=true SSL_CRT_FILE=./secrets/certificate.crt SSL_KEY_FILE=./secrets/private.key react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -60,6 +63,5 @@
   },
   "devDependencies": {
     "gh-pages": "^4.0.0"
-  },
-  "homepage": "https://cornpip.github.io/react_io"
+  }
 }

@@ -40,7 +40,7 @@ export default function SingForm() {
         
         // type이...?
         // console.log("############", res.data, res.error.data.message);
-        if (res.data) navigate(`${process.env.REACT_APP_ROOT}`);
+        if (res.data) navigate(`${process.env.REACT_APP_ROOT2}`);
 
         //error msg info
         if (res.error) setInfo(res.error.data.message);
