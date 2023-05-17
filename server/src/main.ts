@@ -11,11 +11,11 @@ declare const module: any;
 async function bootstrap() {
   const private_path = path.resolve(__dirname, "../secrets", "private.key");
   const certificate_path = path.resolve(__dirname, "../secrets", "certificate.crt");
-  const httpsOptions =  {
+  const httpsOptions = {
     key: fs.readFileSync(private_path),
     cert: fs.readFileSync(certificate_path),
   }
-  
+
   // const production = +process.env.PRODUCTION;
   // const log_level: Array<LogLevel> = production ? ['log', 'error', 'warn'] : ['log', 'error', 'warn', 'debug', 'verbose'];
   const app = await NestFactory.create(AppModule, {
@@ -27,8 +27,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.use(cookieParser());
   app.enableCors({
-    origin: `http://localhost:${configService.get('server.cors_port')}`,
-    // origin: `https://cornpip.github.io`,
+    origin: [`https://cornpip.github.io`],
+    // origin: [`https://cornpip.github.io`, `http://1.244.55.14`, `https://1.244.55.14`, `http://localhost`, `https://localhost`],
     methods: 'GET,POST,DELETE,PUT,PATCH,HEAD,OPTIONS',
     credentials: true,
   });
