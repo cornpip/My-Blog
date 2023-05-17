@@ -53,7 +53,7 @@ export default function Post() {
             <CssBaseline />
             <ResponsiveAppBar />
             <Toolbar />
-            <Grid container direction="row" spacing={{ xs: 2, sm: 3, lg: 4, xl: 5 }} sx={{ pt:{ xs: 2, sm: 3, lg: 4, xl: 5 } }}>
+            <Grid container direction="row" spacing={{ xs: 2, sm: 3, lg: 4, xl: 5 }} sx={{ pt: { xs: 2, sm: 3, lg: 4, xl: 5 } }}>
                 <Grid item xs={12} md={2}>
                     <BasicCard customSx={{
                         position: "sticky",
@@ -65,8 +65,8 @@ export default function Post() {
                         {post_query.isLoading ? <Loading /> : post_query.data ? <Box
                             component="img"
                             sx={{
-                                height: { md: 340 },
-                                objectFit: "contain"
+                                height: { sm: 350, md: 400, xl: 450 },
+                                objectFit: "cover"
                             }}
                             alt={`${post_query.data?.images[0].imageName}`}
                             src={`${process.env.REACT_APP_IMAGE}/${post_query.data?.images[0].imageName}`}

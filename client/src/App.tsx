@@ -9,6 +9,7 @@ import SignIn from "./page/Signin";
 import Post from "./page/Post";
 import NoPage from "./page/NoPage";
 import ScrollTop from "./component/Blog/ScrollTop";
+import SignUp from "./page/Signup";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path={process.env.REACT_APP_ROOT + "/upload"} element={<Upload />} />
         <Route path={process.env.REACT_APP_ROOT + "/edit"} element={<Edit />} />
         <Route path={process.env.REACT_APP_ROOT + "/signin"} element={<SignIn />} />
+        <Route path={process.env.REACT_APP_ROOT + "/signup"} element={<SignUp />} />
 
         <Route path={process.env.REACT_APP_ROOT + "*"} element={<NoPage />} />
         <Route path={"*"} element={<NoPage />} />

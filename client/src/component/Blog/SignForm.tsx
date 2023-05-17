@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import { useSetCheckMutation } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 
-export default function SingForm() {
+export default function SignForm() {
     const navigate = useNavigate();
     const [setCheck, setCheckResult] = useSetCheckMutation();
 
@@ -49,7 +49,7 @@ export default function SingForm() {
     return (
         <>
             <>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: 1 }}>
                     <TextField
                         margin="normal"
                         required

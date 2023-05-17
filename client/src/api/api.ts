@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPost } from "../interface/post.interface";
-import { ResUser, SignInUser } from "../interface/auth.interface";
+import { ResUser, SignInUser, SignUpUser } from "../interface/auth.interface";
 
 
 
@@ -23,7 +23,7 @@ export const Api = createApi({
                 return [{ type: IDPOST_TAG, id: arg.id }]
             },
             transformResponse: (res: IPost): IPost => {
-                console.log("@@@ getIdPost transformResponse", res);
+                // console.log("@@@ getIdPost transformResponse", res);
                 return res;
             }
         }),
@@ -63,7 +63,7 @@ export const Api = createApi({
                 credentials: "include",
             }),
             providesTags: (res, err, arg) => {
-                console.log("@@@ getImage provides", res);
+                // console.log("@@@ getImage provides", res);
                 return [{ type: IMAGE_TAG, id: arg.name }]
             },
         }),
@@ -71,7 +71,7 @@ export const Api = createApi({
             query: () => ({
                 url: `auth/check`,
                 responseHandler: async (res) => {
-                    console.log("@@@ getCheck responseHandler", res);
+                    // console.log("@@@ getCheck responseHandler", res);
                     // 이렇게 처리해도 rtk caching이 reject는 반영안한다.
                     // if (res.status !== 200) {
                     //     console.log("nottttt");
@@ -82,13 +82,13 @@ export const Api = createApi({
                 credentials: "include",
             }),
             transformResponse: (res) => {
-                console.log("@@@ getcheck transformResponse", res);
+                // console.log("@@@ getcheck transformResponse", res);
                 return res;
             },
             //여기도 마찬가지로 처리해도 reject는 반영안됨
             transformErrorResponse: (baseQueryReturnValue, meta, arg) => {
-                console.log("@@@ getcheck transformError", baseQueryReturnValue, meta, arg);
-                return {originalArgs: `success`, err: "err2"};
+                // console.log("@@@ getcheck transformError", baseQueryReturnValue, meta, arg);
+                return { originalArgs: `success`, err: "err2" };
             },
             providesTags: (result, err, arg) => {
                 // console.log("@@@ getcheck providesTags", result);
@@ -108,7 +108,7 @@ export const Api = createApi({
                 return res;
             },
             invalidatesTags: (result, error, args) => [{ type: CHECK_AUTH_TAG }],
-        })
+        }),
     })
 })
 export const { useGetAllPostQuery, useGetIdPostQuery, useGetMdQuery, useGetImageQuery, useGetCheckQuery, useSetCheckMutation } = Api;

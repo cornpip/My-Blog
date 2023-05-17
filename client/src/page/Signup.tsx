@@ -8,13 +8,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useGetCheckQuery } from '../api/api';
 import SignForm from '../component/Blog/SignForm';
 import Footer from '../component/Blog/Footer';
+import SignUpForm from '../component/Blog/SignUpForm';
 
 const theme = createTheme();
 
-export default function SignIn() {
-    const login_query = useGetCheckQuery({});
-    //로그인 로딩 중 표시도 가능
-    
+export default function SignUp() {
+    // login된 상태면 나가게
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -31,10 +30,9 @@ export default function SignIn() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Sign Up
                     </Typography>
-                    {/* { login_query.isFetching ? "login ing" : "" } */}
-                    <SignForm />
+                    <SignUpForm />
                 </Box>
                 <Footer
                     title="Footer"

@@ -1,5 +1,5 @@
 import { client } from "./axios";
-import { SignInUser } from "../interface/auth.interface";
+import { SignInUser, SignUpUser, SignUpRes } from "../interface/auth.interface";
 
 const AuthAPI = {
     signin: async function (body: SignInUser) {
@@ -21,9 +21,14 @@ const AuthAPI = {
         // console.log(res2);
         // return;
     },
-    signup: async function () {
-        return;
-    },
+    signup: async function (body: SignUpUser) {
+        const res: SignUpRes = await client.post("auth/signup", body)
+            .then((r) => ({flag: 1, msg: r.data }) )
+            .catch((e) => {
+                return { flag: 0, msg: e.response.data.message };
+            })
+            return res;
+        },
     logout: async function () {
         const res = await client.get("auth/logout");
         return res.data;
