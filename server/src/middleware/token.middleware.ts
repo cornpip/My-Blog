@@ -24,7 +24,7 @@ export class TokenMiddleware implements NestMiddleware {
         // 일단 acc는 redis랑 비교안하고 refresh만 비교하자
         // redis랑 비교 목적: 맞는 key로 임의로 자기들이 token을 만들어 요청하는 행위를 막으려고
         console.log(access_token);
-        console.log(refresh_token);
+        // console.log(refresh_token);
         if (!access_token) return next(); //''빈 string도 걸림
         try {
             const access_data: JwtDecode = await this.authService.getTokenData(access_token, this.configService.get("auth.acc_token_secret"));
