@@ -38,39 +38,41 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
     image.onload = loadImageHandle;
     image.src = `${process.env.REACT_APP_IMAGE}/${post.images[0].imageName}`;
     setPreImg(image);
+    // loadImageHandle();
   }, []);
 
   return (
     <>
-      {!loadImage && <Loading />}
-      {
-        loadImage && <Grid item xs={12} sm={6} lg={4} >
-          <CardActionArea onClick={handleNavigate} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
-            <Card sx={{ flexDirection: 'column', display: 'flex' }}>
+      <Grid item xs={12} sm={6} lg={4} >
+        <CardActionArea onClick={handleNavigate} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
+          <Card sx={{ flexDirection: 'column', display: 'flex' }}>
+            {!loadImage && <Loading />}
+            {loadImage &&
               <CardMedia
                 component="img"
                 sx={{ height: { xs: 250, sm: 300, md: 320, lg: 340 } }}
                 image={preImg.src}
+                // image={`${process.env.REACT_APP_IMAGE}/${post.images[0].imageName}`}
                 alt={post.images[0].imageName}
-              />
-              <CardContent sx={{ flex: 1, textAlign: "center" }}>
-                <Typography component="h2" variant="h4">
-                  {post.featureTitle}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {timeShow(post.created)}
-                </Typography>
-                <Box sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>
-                  <ReactMd text={md_query.data} />
-                </Box>
-                {/* <Typography variant="subtitle1" color="primary">
+                loading='lazy'
+              />}
+            <CardContent sx={{ flex: 1, textAlign: "center" }}>
+              <Typography component="h2" variant="h4">
+                {post.featureTitle}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                {timeShow(post.created)}
+              </Typography>
+              <Box sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>
+                <ReactMd text={md_query.data} />
+              </Box>
+              {/* <Typography variant="subtitle1" color="primary">
               Continue reading...
             </Typography> */}
-              </CardContent>
-            </Card>
-          </CardActionArea>
-        </Grid>
-      }
+            </CardContent>
+          </Card>
+        </CardActionArea>
+      </Grid>
     </>
   );
 }
