@@ -1,8 +1,9 @@
 import { Public } from '@/decorator/public.decorator';
-import { Body, Controller, Get, Header, HttpException, NotFoundException, Logger, Param, Post, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpException, NotFoundException, Logger, Param, Post, StreamableFile, Res } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { access, constants } from 'fs/promises';
 import { join } from 'path';
+import { Request, Response } from 'express';
 
 @Controller('file')
 export class StreamController {
@@ -41,17 +42,20 @@ export class StreamController {
 
     @Public()
     @Get('/image/:name')
+    @Header('Cache-Control', 'max-age=3600')
     // @Header("Content-Type", "image/png") 
     // 기본 Content-Type은 application/octet-stream
     // 브라우저에서 사용할 때는 이미지 태그의 src에서 octet도 알아서 처리해준다.
     async getImage(
-        @Param("name") name: string
+        @Param("name") name: string,
+        @Res({ passthrough: true }) res: Response,
     ) {
         this.logger.debug("file/image:name");
         const image_path = join("img", name);
         try{
             await access(image_path);
             const imagefile = createReadStream(image_path);
+            // res.header('Cache-Control', 'public, max-age=3600');
             return new StreamableFile(imagefile);
         }catch (e) {
             throw new NotFoundException(`File Access Failed`);
