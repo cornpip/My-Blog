@@ -4,6 +4,7 @@ import { createReadStream } from 'fs';
 import { access, constants } from 'fs/promises';
 import { join } from 'path';
 import { Request, Response } from 'express';
+import * as sharp from 'sharp';
 
 @Controller('file')
 export class StreamController {
@@ -43,7 +44,7 @@ export class StreamController {
     @Public()
     @Get('/image/:name')
     @Header('Cache-Control', 'max-age=3600')
-    // @Header("Content-Type", "image/png") 
+    @Header("Content-Type", "image/jpeg") 
     // 기본 Content-Type은 application/octet-stream
     // 브라우저에서 사용할 때는 이미지 태그의 src에서 octet도 알아서 처리해준다.
     async getImage(
@@ -54,9 +55,13 @@ export class StreamController {
         const image_path = join("img", name);
         try{
             await access(image_path);
-            const imagefile = createReadStream(image_path);
+            // const imageBuffer = createReadStream(image_path);
+            const imageBuffer = await sharp(image_path)
+            .withMetadata()
+            .toFormat('jpeg', { quality: 80 })
+            .toBuffer();
             // res.header('Cache-Control', 'public, max-age=3600');
-            return new StreamableFile(imagefile);
+            return new StreamableFile(imageBuffer);
         }catch (e) {
             throw new NotFoundException(`File Access Failed`);
         }
