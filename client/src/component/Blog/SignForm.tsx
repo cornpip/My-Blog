@@ -37,7 +37,7 @@ export default function SignForm() {
         const res: any = await setCheck({ email: email, password: password });
         // setCheckResult는 한 차례 전의 data로 나온다.
         // console.log(setCheckResult);
-        
+
         // type이...?
         // console.log("############", res.data, res.error.data.message);
         if (res.data) navigate(`${process.env.REACT_APP_ROOT2}`);
@@ -74,11 +74,6 @@ export default function SignForm() {
                         onChange={pwdHandler}
                         error={err2}
                     />
-                    {/* <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                    onChange={()=>console.log("hello form")}
-                                /> */}
                     <Typography variant="body1" align="center" color="error">
                         {info}
                     </Typography>
@@ -90,19 +85,22 @@ export default function SignForm() {
                     >
                         Sign In
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                {`아이디를 잃어버리셨나요?`}
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </Box>
+                <Grid container>
+                    <Grid item xs>
+                        <Link component="button" onClick={() => { }} underline="hover" variant="body2">
+                            {`아이디를 잃어버리셨나요?`}
+                        </Link>
+                    </Grid>
+                    <Grid item>
+                        <Link component="button" onClick={() => {
+                            navigate(`${process.env.REACT_APP_ROOT}/signup`)
+                        }}
+                            underline="hover" variant="body2">
+                            {"Don't have an account? Sign Up"}
+                        </Link>
+                    </Grid>
+                </Grid>
             </>
         </>
     )

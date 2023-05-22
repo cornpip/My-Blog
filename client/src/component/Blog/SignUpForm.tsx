@@ -4,6 +4,7 @@ import { useState } from "react";
 import AuthAPI from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import { SignUpRes } from "../../interface/auth.interface";
+import InfoModal from "../Modal/InfoModal";
 
 export default function SignUpForm() {
     const navigate = useNavigate();
@@ -12,6 +13,12 @@ export default function SignUpForm() {
     const [info, setInfo] = useState<string>("");
     const [err1, setErr1] = useState<boolean>(false);
     const [err2, setErr2] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false); 
+
+    function closeHandler(){
+        setOpen(false);
+        navigate(`${process.env.REACT_APP_ROOT}/signin`);
+    }
 
     function emailHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
         setEmail(e.target.value);
@@ -30,12 +37,14 @@ export default function SignUpForm() {
         if (!password) return setErr2(true);
 
         const res: SignUpRes = await AuthAPI.signup({ email: email, password: password });
-        if (res.flag) navigate(`${process.env.REACT_APP_ROOT}/signin`);
-        else setInfo(res.msg);
+        if (res.flag) {
+            setOpen(true);
+        }else setInfo(res.msg);
     };
 
     return (
         <>
+            <InfoModal info_title={"Sign up is complete"} info_sub={"You can login with your registered ID"} open={open} setOpen={setOpen} closeHandler={closeHandler} />
             {/* Box에 noValidate하면 입력하세요 안뜸 */}
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: 1 }}>
                 <Typography>
