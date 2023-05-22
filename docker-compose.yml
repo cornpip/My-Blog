@@ -9,11 +9,9 @@ services:
       MYSQL_DATABASE: ioblog
     command: >
       bash -c "
-        cp /ioblog_backup.sql /docker-entrypoint-initdb.d/;
         docker-entrypoint.sh --lower_case_table_names=1;
       "
     volumes:
-      - ./ioblog_backup.sql:/ioblog_backup.sql
       - ./initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--password=${MYSQL_ROOT_PASSWORD}"]
