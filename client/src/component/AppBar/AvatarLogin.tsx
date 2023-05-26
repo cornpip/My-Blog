@@ -10,9 +10,7 @@ import BasicModal from '../Modal/BasicModal';
 import { useGetCheckQuery, useSetCheckMutation } from '../../api/api';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
-
-
-const menuSetting = ['Profile', 'Account', 'Dashboard', 'Posting', 'Logout'];
+import { MenuSetting, MENU } from '../../constants/sections';
 
 export default function AvatarLogin() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -45,8 +43,12 @@ export default function AvatarLogin() {
         setOpen(false);
     }
 
-    async function postHandler(){
+    async function uploadHandler(){
         navigate(process.env.REACT_APP_ROOT + `/upload`);
+    }
+
+    async function postHandler(){
+        navigate(process.env.REACT_APP_ROOT + `/posting`);
     }
 
     return (
@@ -83,12 +85,12 @@ export default function AvatarLogin() {
                 <MenuItem key="Logout" onClick={logoutHandler}>
                     <Typography textAlign="center">LOGOUT</Typography>
                 </MenuItem> */}
-                {menuSetting.map((menu) => {
+                {MenuSetting.map((menu) => {
                     let clickEvent = ()=>{};
-                    const u_menu = menu.toUpperCase();
                     
-                    if(u_menu == "LOGOUT") clickEvent = logoutHandler;
-                    if(u_menu == "POSTING") clickEvent = postHandler;
+                    if(menu == MENU.Logout) clickEvent = logoutHandler;
+                    if(menu == MENU.Upload) clickEvent = uploadHandler;
+                    if(menu == MENU.Posting) clickEvent = postHandler;
                     return (
                         <MenuItem key={menu} onClick={clickEvent}>
                             <Typography textAlign="center">{menu}</Typography>

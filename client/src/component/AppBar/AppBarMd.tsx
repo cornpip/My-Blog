@@ -16,7 +16,7 @@ export default function AppBarMd() {
                 variant="h6"
                 noWrap //자리가 없어도 한 줄에 배치되게
                 component="a"
-                href={process.env.REACT_APP_ROOT}
+                href={process.env.REACT_APP_ROOT2}
                 sx={{
                     mr: 2,
                     display: { xs: 'none', md: 'flex' },

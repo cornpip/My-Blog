@@ -65,7 +65,10 @@ export default function Post() {
                         {post_query.isLoading ? <Loading /> : post_query.data ? <Box
                             component="img"
                             sx={{
-                                height: { sm: 350, md: 400, xl: 450 },
+                                // height: { xs: "60%", md: "90%" },
+                                // width가 grid에서 고정이라 그런가 cover에 height %를 주면 공간 남는다.
+                                width: { xs: "90%", sm: "80%", md: "70%" },
+                                height: "auth",
                                 objectFit: "cover"
                             }}
                             alt={`${post_query.data?.images[0].imageName}`}

@@ -4,14 +4,28 @@ import { useNavigate } from 'react-router-dom';
 import BasicTable from '../component/Table/BasicTable';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
 import PostAPI from '../api/post';
 import { useGetCheckQuery } from '../api/api';
 import NoAuth from './NoAuth';
 import Loading from './Loading';
 import Footer from '../component/Blog/Footer';
+import MiniHead from '../component/Head/MiniHead';
+import { Box, Grid } from '@mui/material';
 
+//<BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesinfoMd} />
+//basictable을 위와 같이 사용한다.
+
+//따로 파일로 관리하지 않는 상수를 직접 사용한다고 무조건 바꾸지 말자.
+//이 경우 headrows와 rows의 순서는 같아야하고 rows는 해당 컴포넌트에서 업로드를 받고 만든다.
+
+//범용적인 표 컴포넌트를 만들기 위해서는 순서가 지정된 array로 받아야하고 순서는 table을 만드는 컴포넌트에서 명시적으로 지정하는게 더 좋아보인다.
+
+//그리고 타입을 잘 지정하면서 추상화를 하려면 제네릭은 필수적인 것 같다.
+// -> 공통info로 제한된 제네릭으로 하고 공통info 구현한 interface만들고 순서는 자료구조로 접근하면 만들 수 있을 것 같다.
+
+//  퀴즈: commonTable 컴포넌트를 만든다
+//  조건: table head와 row data를 인자로 받고 table head와 row data의 원소 순서는 보장되어 있지 않다고 가정한다. 제네릭을 사용해라 
 export default function Upload() {
     //react의 변수관리를 usestate로 해야하는 이유
     //re-render가 아니여도 setstate를 할 때, Upload()는 돈다. (처음처럼 도는건 아니고 업데이트 느낌으로 돎)
@@ -96,19 +110,20 @@ export default function Upload() {
             {login_query.isLoading ? <Loading /> : login_query.error ? <NoAuth /> :
                 <Container>
                     <Grid container spacing={2}>
-                        <Grid xs={12}>
-                            <Typography variant="h2"> Upload Page </Typography>
+                        <Grid item xs={12}>
+                            <MiniHead />
                         </Grid>
-                        <Grid xs={12}>
+                        <Grid item xs={12}>
                             <TextField
                                 error={err}
                                 fullWidth id="filled-basic"
                                 label="feature title"
                                 variant="standard"
-                                onChange={texthandler}>
+                                onChange={texthandler}
+                                sx={{}}>
                             </TextField>
                         </Grid>
-                        <Grid xs={12} sx={imgborder}>
+                        <Grid item xs={12} sx={imgborder}>
                             <Typography variant='h6'>
                                 Feature image
                             </Typography>
@@ -123,7 +138,7 @@ export default function Upload() {
                             </Button>
                             <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
                         </Grid>
-                        <Grid xs={12} sx={mdborder}>
+                        <Grid item xs={12} sx={mdborder}>
                             <Typography variant='h6'>
                                 md File
                             </Typography>

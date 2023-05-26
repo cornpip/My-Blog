@@ -73,7 +73,7 @@ export default function AppBarXs() {
                 variant="h5"
                 noWrap
                 component="a"
-                href={process.env.REACT_APP_ROOT}
+                href={process.env.REACT_APP_ROOT2}
                 sx={{
                     mr: 2,
                     display: { xs: 'flex', md: 'none' },
