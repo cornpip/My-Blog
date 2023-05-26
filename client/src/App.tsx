@@ -8,7 +8,7 @@ import Post from "./page/Post";
 import NoPage from "./page/NoPage";
 import ScrollTop from "./component/Blog/ScrollTop";
 import SignUp from "./page/Signup";
-import Test from "./page/Test";
+// import Test from "./page/Test";
 
 function App() {
   return (
