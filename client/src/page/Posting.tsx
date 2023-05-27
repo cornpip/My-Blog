@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
 import BasicTable from "../component/Table/BasicTable";
+import { sample_txt } from "../constants/sample.const";
+
 
 export default function Posting() {
     const [text, setText] = useState<string>("");
@@ -46,10 +48,10 @@ export default function Posting() {
                         component="label"
                         sx={{}}
                     >
-                        Feature image upload
+                        Feature image upload *
                         <input hidden multiple type="file" onChange={(e) => inputHandler(e)} />
                     </Button>
-                    <Box sx={{ width: { xs: "100%", lg: "80%" } }}>
+                    <Box sx={{ width: { xs: "100%", lg: "50%" } }}>
                         <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
                     </Box>
                 </Grid>
@@ -58,23 +60,24 @@ export default function Posting() {
                         required
                         id="filled-required"
                         label="Title"
-                        variant="filled"
-                        sx={{ width: { xs: "100%", lg: "80%" } }}
+                        // variant="filled"
+                        sx={{ width: { xs: "100%", lg: "100%" } }}
                     />
                 </Grid>
                 <Grid item xs={12} md={6} sx={{}}>
                     <TextField
                         id="outlined-multiline-flexible"
-                        variant="filled"
+                        // variant="filled"
+                        // label="Write in markdown"
                         fullWidth
-                        // label="Multiline"
+                        placeholder={sample_txt}
                         multiline
                         value={text}
                         onChange={textHandler}
                     />
                 </Grid>
                 <Grid item xs={12} md={6} zeroMinWidth sx={{}}>
-                    <ReactMd text={text} />
+                    { text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
                 </Grid>
             </Grid>
         </Container >
