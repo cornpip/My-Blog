@@ -3,20 +3,10 @@ import { useGetAllPostQuery } from "../../api/api";
 import FeaturedPost from "./FeaturedPost";
 import Loading from "../../page/Loading";
 
-
-// {
-//     title: 'Featured post3',
-//     date: 'Nov 12',
-//     description:
-//       'This is a wider card with supporting text below as a natural lead-in to additional content.',
-//     image: 'https://source.unsplash.com/random',
-//     imageLabel: 'Image Text',
-//   },
-
 export default function FeaturedBlock() {
     console.log("@@@: FeaturedBlock");
     const posts_query = useGetAllPostQuery({}); //caching으로 동작하는지 확인필요
-    const featured_count = 8;
+    const featured_count = 9;
 
     return (
         <Grid container spacing={5}>

@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Logger, HttpException, HttpStatus, UploadedFile } from '@nestjs/common';
 import { PostService } from '../service/post.service';
-import { CreatePostDto } from '../dto/create-post.dto';
+import { CreateFileDto, CreateWrtieDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { IsFile } from '@/pipe/is_file.pipe';
-import { TestService } from '@/test/test.service';
+import { UploadPipe } from '@/post/pipe/upload.pipe';
 import { Public } from '@/decorator/public.decorator';
+import { UploadI } from '../interface/file.interface';
+import { WrtiePipe } from '../pipe/write.pipe';
 
 @Controller('post')
 export class PostController {
@@ -15,7 +16,9 @@ export class PostController {
     private readonly postService: PostService,
   ) { }
 
-  @Post('/')
+  @Post('/test')
+  // this.SaveFilePipe() //데코레이터 인자 안에서 this는 contorller와 다른 듯 하다.
+
   // @UseInterceptors(FilesInterceptor('files', 2)) //MulterOption
   // 1차적으로 interceptor에서 없는 field가 들어오면 "Unexpected field" + 400error
   // 명시된 field가 안들어오는건 상관X
@@ -26,19 +29,53 @@ export class PostController {
   create(
     // 일단 create에서 받는 image는 대표 image 하나로 생각
     // 현재 entity 는 images다
-    @UploadedFiles(new IsFile()) //new IsFile()
-    files: { image: Array<Express.Multer.File>, md: Array<Express.Multer.File> },
-    @Body() createPostDto: CreatePostDto
+    @UploadedFiles(new UploadPipe())
+    files: UploadI,
+    @Body() createPostDto: CreateFileDto
   ) {
-    this.logger.debug("post upload");
+    this.logger.debug("post test");
     // console.log(files);
     try {
-      this.postService.create(createPostDto, files);
+      // this.postService.create(createPostDto, files);
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.FORBIDDEN);
     }
-    return `success upload file`;
+    return `test`;
     // interceptor, uploaded 둘 다 file/files 구분한다.
+  }
+
+  @Post("/upload")
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: "image", maxCount: 1 },
+    { name: "md", maxCount: 1 }
+  ]))
+  async createFile(
+    @UploadedFiles(new UploadPipe()) files: UploadI,
+    @Body() createFileDto: CreateFileDto
+  ){
+    this.logger.debug("post/file");
+    try {
+      this.postService.createFile(createFileDto, files);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.FORBIDDEN);
+    }
+    return `success upload post`;
+  }
+  
+  @Post("/write")
+  @UseInterceptors(FileInterceptor('file'))
+  async createWrite(
+    @UploadedFile(new WrtiePipe()) file: Express.Multer.File,
+    @Body() createWrtieDto: CreateWrtieDto
+  ) {
+    this.logger.debug("post/write");
+    // console.log(file.buffer.toString('base64').length);
+    try {
+      this.postService.createWrite(createWrtieDto, file);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.FORBIDDEN);
+    }
+    return `success write post`;
   }
 
   @Public()
@@ -57,24 +94,6 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
-  @Post('/test')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: "image", maxCount: 1 },
-    { name: "md", maxCount: 1 }
-  ]))
-  test(
-    @UploadedFiles(
-      new IsFile(),
-      // this.SaveFilePipe() //데코레이터 인자 안에서 this는 contorller와 다른 듯 하다.
-    ) files: { image?: Array<Express.Multer.File>, md?: Array<Express.Multer.File> },
-    @Body() body: any
-  ) {
-    // console.log(files);
-    // logger.debug format 없이 다나온다. (buffer 같은거 foramt없이 다 출력)
-    // this.logger.debug(files.image);
-    return `test 입니당`
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);
@@ -86,7 +105,7 @@ export class PostController {
   }
 
   @Get("test2")
-  async test2(){
+  async test2() {
     return `global app guard test`;
   }
 }

@@ -4,24 +4,18 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { IPost } from '../../interface/post.interface';
 import { FeaturedPostProps } from '../../interface/blog.interface';
 import { timeShow } from '../../util/time.util';
-import { useGetImageQuery, useGetMdQuery } from '../../api/api';
-import Box from '@mui/material/Box';
-import ReactMd from '../MarkDown/Reactmd';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Loading from '../../page/Loading';
+import '../../css/FeaturedPost.module.css';
 
-
-//post.mdNmae자리 = 설명 앞부분 가져와야함
-//post image가져오기
 export default function FeaturedPost({ post }: FeaturedPostProps) {
   const [loadImage, setLoadImage] = useState<boolean>(false);
   const [preImg, setPreImg] = useState(new Image());
+
   const loadImageHandle = () => {
-    // console.log("~~~");
     setLoadImage(true);
   }
 
@@ -29,9 +23,6 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
   const handleNavigate = () => {
     navigate(process.env.REACT_APP_ROOT + `/post/${post.id}`)
   };
-
-  console.log("### FeautredPost", post);
-  const md_query = useGetMdQuery({ name: post.mdName });
 
   useEffect(() => {
     const image = new Image();
@@ -43,38 +34,33 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
 
   return (
     <>
-      <Grid item xs={12} sm={6} lg={4} >
-        <CardActionArea onClick={handleNavigate} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
-          <Card sx={{ flexDirection: 'column', display: 'flex' }}>
-            {!loadImage && <Loading />}
-            {loadImage &&
-              <CardMedia
-                component="img"
-                sx={{ height: { xs: 250, sm: 300, md: 320, lg: 340 } }}
-                image={preImg.src}
-                // image={`${process.env.REACT_APP_IMAGE}/${post.images[0].imageName}`}
-                alt={post.images[0].imageName}
-                loading='lazy'
-              />}
-            <CardContent sx={{ flex: 1, textAlign: "center" }}>
-              <Typography component="h2" variant="h4">
-                {post.featureTitle}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
+        <Grid item xs={12} sm={6} lg={4} >
+          <CardActionArea onClick={handleNavigate} sx={{ boxShadow: "-1px 1px 12px 1px rgba(204, 204, 204, .7)" }}>
+            <Card sx={{ flexDirection: 'column', display: 'flex' }}>
+              {!loadImage && <Loading />}
+              {loadImage &&
+                <CardMedia
+                  component="img"
+                  sx={{ height: { xs: 250, sm: 300, md: 320, lg: 340 } }}
+                  image={preImg.src}
+                  alt={post.images[0].imageName}
+                  loading='lazy'
+                />}
+              <CardContent sx={{ flex: 1, textAlign: "center" }}>
+                <Typography variant="h4" fontFamily={"'Nanum Gothic', sans-serif"}>
+                  {post.featureTitle}
+                </Typography>
+                {/* 날짜 아래로 내리자 */}
+                {/* <Typography variant="subtitle1" color="text.secondary">
                 {timeShow(post.created)}
-              </Typography>
-              <Box sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>
-                <ReactMd text={md_query.data} />
-              </Box>
-              {/* <Typography variant="subtitle1" color="primary">
-              Continue reading...
-            </Typography> */}
-            </CardContent>
-          </Card>
-        </CardActionArea>
-      </Grid>
+              </Typography> */}
+                <Typography sx={{ overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.3, height: "3.9em", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical", marginTop: 1}}>
+                  {}
+                </Typography>
+              </CardContent>
+            </Card>
+          </CardActionArea>
+        </Grid>
     </>
   );
 }
-
-//image ={post.image};

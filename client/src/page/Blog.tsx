@@ -1,6 +1,5 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import MainFeaturedPost from '../component/Blog/MainFeaturedPost';
 import Footer from '../component/Blog/Footer';
 import '../css/Blog.module.css';
@@ -27,16 +26,11 @@ Blog.defaultProps = {
   chapter: ""
 }
 
-let theme = createTheme({
-  spacing: 8, //default값
-});
-theme = responsiveFontSizes(theme);
-// container sx={{ maxWidth: {xl: "95%"} }}
 export default function Blog(props: test) {
   const { chapter } = props;
   console.log("bloggggggggg", chapter);
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
       <Container maxWidth={false} sx={{ maxWidth: { md: "95%" } }}>
         <ResponsiveAppBar />
@@ -51,6 +45,6 @@ export default function Blog(props: test) {
         title="Footer"
         description="Something here to give the footer a purpose!"
       />
-    </ThemeProvider>
+    </>
   );
 }

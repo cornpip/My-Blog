@@ -6,7 +6,7 @@ export interface Iimage {
 export interface IPost {
     id: number,
     featureTitle: string,
-    mdName: string,
+    content: string,
     created: string,
     updated: string,
     images: Array<Iimage>,

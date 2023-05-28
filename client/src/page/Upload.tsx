@@ -66,11 +66,11 @@ export default function Upload() {
         }
         //data : JSON.stringify된 { ~~~~~ }
         //위의형태를 보내줘야할지, json으로 key value가 넘어가야할지는 서버에서 지정한 형식을 따른다.
-        if (title && formData.has("md")) {
+        if (title && formData.has("md") && formData.has("image")) {
             formData.delete("feature_title"); //초기화
             formData.append("feature_title", title);
             try {
-                await PostAPI.formSubmit(formData);
+                await PostAPI.uploadSubmit(formData);
                 navigate(`${process.env.REACT_APP_ROOT2}`, { replace: true });
                 window.location.reload();
                 // console.log("성공");

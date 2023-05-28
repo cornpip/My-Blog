@@ -1,18 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPost } from "../interface/post.interface";
-import { ResUser, SignInUser, SignUpUser } from "../interface/auth.interface";
-
+import { ResUser, SignInUser } from "../interface/auth.interface";
 
 
 const IDPOST_TAG = "IdPost";
 const ALLPOST_TAG = "AllPost";
-const MD_TAG = "MarkDown";
 const IMAGE_TAG = "Image";
 const CHECK_AUTH_TAG = "CheckAuth";
 
 export const Api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_SERVER }),
-    tagTypes: [IDPOST_TAG, ALLPOST_TAG, MD_TAG, IMAGE_TAG, CHECK_AUTH_TAG],
+    tagTypes: [IDPOST_TAG, ALLPOST_TAG, IMAGE_TAG, CHECK_AUTH_TAG],
     endpoints: (builder) => ({
         getIdPost: builder.query({
             query: ({ id }) => ({
@@ -40,19 +38,6 @@ export const Api = createApi({
             transformResponse: (res: Array<IPost>): Array<IPost> => {
                 return res;
             }
-        }),
-        getMd: builder.query({
-            query: ({ name }) => ({
-                url: `file/md/${name}`,
-                responseHandler: (res): Promise<string> => res.text(),
-                credentials: "include",
-            }),
-            providesTags: (result, err, arg) => {
-                // console.log("@@@ getMd providesTags", result, err, arg);
-                return [{ type: MD_TAG, id: arg.name }];
-            },
-            // transformResponse는 err없이 res return나온 후 handle같다.
-            // err있으면 아나오고 return전 res handle은 responsehandler에서 된다.
         }),
         getImage: builder.query({
             query: ({ name }) => ({
@@ -111,4 +96,4 @@ export const Api = createApi({
         }),
     })
 })
-export const { useGetAllPostQuery, useGetIdPostQuery, useGetMdQuery, useGetImageQuery, useGetCheckQuery, useSetCheckMutation } = Api;
+export const { useGetAllPostQuery, useGetIdPostQuery, useGetImageQuery, useGetCheckQuery, useSetCheckMutation } = Api;

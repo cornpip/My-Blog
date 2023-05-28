@@ -1,6 +1,6 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import { Theme, createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 import BasicCard from "../component/Blog/BasicCard";
 import Sidebar from "../component/Blog/Sidebar";
@@ -38,11 +38,6 @@ const sidebar = {
         { name: 'Facebook', icon: FacebookIcon },
     ],
 };
-
-let theme = createTheme({
-    spacing: 8, //default값
-});
-theme = responsiveFontSizes(theme);
 
 export default function Post() {
     const { postId } = useParams();
