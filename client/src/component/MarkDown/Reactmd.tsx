@@ -38,15 +38,13 @@ export default function ReactMd(props: ReactMdProps) {
     };
 
     return (
-        <Box sx={{ height: "100vh", overflow: "auto" }}>
-            <div className='markdown-body'>
-                <ReactMarkdown
-                    remarkPlugins={[rehypeHighlight, remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    components={renderers}>
-                    {text}
-                </ReactMarkdown>
-            </div>
-        </Box>
+        <div className='markdown-body'>
+            <ReactMarkdown
+                remarkPlugins={[rehypeHighlight, remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={renderers}>
+                {text}
+            </ReactMarkdown>
+        </div>
     )
 }

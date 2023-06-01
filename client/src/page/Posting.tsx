@@ -123,7 +123,9 @@ export default function Posting() {
                             <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
                         </Grid>
                         <Grid item xs={12} md={6} zeroMinWidth sx={{}}>
-                            {text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
+                            <Box sx={{ height: "100vh", overflow: "auto" }}>
+                                {text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
+                            </Box>
                         </Grid>
                     </Grid>
                 </Container >
