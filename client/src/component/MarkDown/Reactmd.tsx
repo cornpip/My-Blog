@@ -6,6 +6,7 @@ import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw';
+import { Box } from '@mui/material';
 
 interface ReactMdProps {
     text: string
@@ -37,13 +38,15 @@ export default function ReactMd(props: ReactMdProps) {
     };
 
     return (
-        <div className='markdown-body'>
-            <ReactMarkdown
-                remarkPlugins={[rehypeHighlight, remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-                components={renderers}>
-                {text}
-            </ReactMarkdown>
-        </div>
+        <Box sx={{ height: "100vh", overflow: "auto" }}>
+            <div className='markdown-body'>
+                <ReactMarkdown
+                    remarkPlugins={[rehypeHighlight, remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={renderers}>
+                    {text}
+                </ReactMarkdown>
+            </div>
+        </Box>
     )
 }
