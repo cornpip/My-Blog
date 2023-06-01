@@ -1,5 +1,5 @@
-import { Box, Button, Container, FilledInput, FormControl, Grid, InputAdornment, InputLabel, TextField, Toolbar, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Box, Button, Container, Grid, TextField } from "@mui/material";
+import { useState, useEffect, useCallback } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
 import BasicTable from "../component/Table/BasicTable";
@@ -8,6 +8,7 @@ import { useGetCheckQuery } from "../api/api";
 import NoAuth from "./NoAuth";
 import PostAPI from "../api/post";
 import { useNavigate } from "react-router-dom";
+import EditCodeMirror from "../component/Blog/EditCodeMirror";
 
 
 export default function Posting() {
@@ -26,10 +27,9 @@ export default function Posting() {
         return;
     }
 
-    function textHandler(e: any) {
-        setText(e.target.value);
-        return;
-    }
+    const editOnChange = useCallback((value: string, viewUpdate: any) => {
+        setText(value);
+    }, []);
 
     function inputHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files;
@@ -76,8 +76,8 @@ export default function Posting() {
         <>
             {login_query.error && <NoAuth />}
             {!login_query.isLoading && !login_query.error &&
-                <Container maxWidth={false} sx={{ maxWidth: { md: "95%" } }}>
-                    <Grid container spacing={2}>
+                <Container maxWidth={false} sx={{ maxWidth: { md: "95%" }, height: "100vh" }}>
+                    <Grid container spacing={2} sx={{ height: "100%" }}>
                         <Grid item xs={12}>
                             <MiniHead />
                         </Grid>
@@ -94,7 +94,6 @@ export default function Posting() {
                                 </Button>
                             </Box>
                             <Button
-                                // size="large"
                                 variant='contained'
                                 color='success'
                                 onClick={submitHandler}
@@ -121,15 +120,7 @@ export default function Posting() {
                             />
                         </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
-                            <TextField
-                                id="outlined-multiline-flexible"
-                                error={err}
-                                fullWidth
-                                placeholder={sample_txt}
-                                multiline
-                                value={text}
-                                onChange={textHandler}
-                            />
+                            <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
                         </Grid>
                         <Grid item xs={12} md={6} zeroMinWidth sx={{}}>
                             {text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
