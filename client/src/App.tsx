@@ -1,4 +1,3 @@
-import './css/App.module.css'
 import Blog from "./page/Blog";
 import Ai from "./page/Ai";
 import Upload from "./page/Upload"
@@ -10,7 +9,6 @@ import NoPage from "./page/NoPage";
 import ScrollTop from "./component/Blog/ScrollTop";
 import SignUp from "./page/Signup";
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
-// import Test from "./page/Test";
 
 let theme = createTheme({
   spacing: 8, //default값
@@ -32,7 +30,6 @@ function App() {
           <Route path={process.env.REACT_APP_ROOT + "/signup"} element={<SignUp />} />
 
           <Route path={process.env.REACT_APP_ROOT + "*"} element={<NoPage />} />
-          {/* <Route path="/test" element={<Test />} /> */}
           <Route path={"*"} element={<NoPage />} />
         </Routes>
       </ThemeProvider>
