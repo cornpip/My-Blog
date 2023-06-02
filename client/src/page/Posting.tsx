@@ -14,16 +14,22 @@ import EditCodeMirror from "../component/Blog/EditCodeMirror";
 export default function Posting() {
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+    const [subTitle, setSubTitle] = useState<string>("");
     const [formData, setFormData] = useState(new FormData);
     const [filesInfo, setFilesInfo] = useState<Array<Array<string | number>>>([]);
     const [err, setErr] = useState(false);
     const [imgborder, setimgBorder] = useState({});
+    const [editborder, setEditBorder] = useState({});
     const login_query = useGetCheckQuery({});
     const navigate = useNavigate();
 
     function titleHandler(e: any) {
-        // console.log(e.target.value);
         setTitle(e.target.value);
+        return;
+    }
+
+    function subTtileHandler(e: any) {
+        setSubTitle(e.target.value);
         return;
     }
 
@@ -56,16 +62,17 @@ export default function Posting() {
             borderColor: 'error.main',
             borderRadius: 2
         });
-        else if (!title || !text) setErr(true);
+        else if (!title) setErr(true);
+        else if (!text) setEditBorder({ border: 1, borderColor: 'error.main'});
 
-        if (title && formData.has("file")) {
-            formData.delete("feature_title"); formData.delete("content")
+        if (title && text && formData.has("file")) {
+            formData.delete("feature_title"); formData.delete("sub_title"); formData.delete("content");
             formData.append("feature_title", title);
+            formData.append("sub_title", subTitle);
             formData.append("content", text);
             try {
                 await PostAPI.writeSubmit(formData);
                 navigate(`${process.env.REACT_APP_ROOT2}`, { replace: true });
-                window.location.reload();
             } catch (e) {
                 console.log(e);
             }
@@ -112,15 +119,27 @@ export default function Posting() {
                             <TextField
                                 required
                                 error={err}
-                                id="filled-required"
+                                id="title"
                                 label="Title"
                                 value={title}
                                 onChange={titleHandler}
                                 sx={{ width: { xs: "100%", lg: "100%" } }}
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="subtitle"
+                                label="subtitle to show"
+                                multiline
+                                rows={3}
+                                onChange={subTtileHandler}
+                                sx={{ width: { xs: "100%", lg: "100%" } }}
+                            />
+                        </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
-                            <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
+                            <Box sx={{ ...editborder }}>
+                                <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
+                            </Box>
                         </Grid>
                         <Grid item xs={12} md={6} zeroMinWidth sx={{}}>
                             <Box sx={{ height: "100vh", overflow: "auto" }}>

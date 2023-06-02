@@ -33,6 +33,7 @@ export default function Upload() {
     const [filesInfo, setFilesInfo] = useState<Array<Array<string | number>>>([]);
     const [filesinfoMd, setfilesinfoMd] = useState<Array<Array<string | number>>>([]);
     const [title, setTitle] = useState("");
+    const [subTitle, setSubTitle] = useState<string>("");
     const [formData, setFormData] = useState(new FormData);
     const [err, setErr] = useState(false);
     const [mdborder, setmdBorder] = useState({});
@@ -40,6 +41,34 @@ export default function Upload() {
     const [fail, setFail] = useState(false);
     const navigate = useNavigate();
     const login_query = useGetCheckQuery({});
+
+    function texthandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        setTitle(e.target.value);
+    }
+
+    function subTtileHandler(e: any) {
+        setSubTitle(e.target.value);
+        return;
+    }
+
+    function inputHandler(e: React.ChangeEvent<HTMLInputElement>, image: boolean) {
+        const files = e.target.files;
+        image ? formData.delete("image") : formData.delete("md"); //초기화
+        if (files !== null) {
+            const info = [];
+            const fleng = files.length;
+            for (let i = 0; i < fleng; i++) {
+                info.push([files[i].name, files[i].type, Math.round(files[i].size / 1024)])
+                image ? formData.append("image", files[i]) : formData.append("md", files[i]);
+            }
+
+            image ? setFilesInfo(info) : setfilesinfoMd(info);
+            // formData는 render 요소가 아니므로 굳이 setstate 하지 않아도 된다.
+        }
+        // console.log(e.target.files);
+        // console.log(formData.getAll("image"));
+        // console.log(formData.getAll("md"));
+    }
 
     async function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
         // console.log(e);
@@ -67,42 +96,17 @@ export default function Upload() {
         //data : JSON.stringify된 { ~~~~~ }
         //위의형태를 보내줘야할지, json으로 key value가 넘어가야할지는 서버에서 지정한 형식을 따른다.
         if (title && formData.has("md") && formData.has("image")) {
-            formData.delete("feature_title"); //초기화
+            formData.delete("feature_title"); formData.delete("sub_title");
             formData.append("feature_title", title);
+            formData.append("sub_title", subTitle);
             try {
                 await PostAPI.uploadSubmit(formData);
                 navigate(`${process.env.REACT_APP_ROOT2}`, { replace: true });
-                window.location.reload();
-                // console.log("성공");
             } catch (e) {
                 console.log(e);
                 setFail(true);
             }
         }
-    }
-
-    function inputHandler(e: React.ChangeEvent<HTMLInputElement>, image: boolean) {
-        const files = e.target.files;
-        image ? formData.delete("image") : formData.delete("md"); //초기화
-        if (files !== null) {
-            const info = [];
-            const fleng = files.length;
-            for (let i = 0; i < fleng; i++) {
-                info.push([files[i].name, files[i].type, Math.round(files[i].size / 1024)])
-                image ? formData.append("image", files[i]) : formData.append("md", files[i]);
-            }
-
-            image ? setFilesInfo(info) : setfilesinfoMd(info);
-            // formData는 render 요소가 아니므로 굳이 setstate 하지 않아도 된다.
-        }
-        // console.log(e.target.files);
-        console.log(formData.getAll("image"));
-        console.log(formData.getAll("md"));
-    }
-
-    function texthandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
-        // console.log(e);
-        setTitle(e.target.value);
     }
 
     return (
@@ -116,11 +120,20 @@ export default function Upload() {
                         <Grid item xs={12}>
                             <TextField
                                 error={err}
-                                fullWidth id="filled-basic"
-                                label="feature title"
-                                variant="standard"
-                                onChange={texthandler}
-                                sx={{}}>
+                                fullWidth id="title"
+                                label="title"
+                                variant="filled"
+                                onChange={texthandler}>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth id="subtitle"
+                                label="subtitle to show"
+                                variant="filled"
+                                multiline
+                                rows={3}
+                                onChange={subTtileHandler}>
                             </TextField>
                         </Grid>
                         <Grid item xs={12} sx={imgborder}>

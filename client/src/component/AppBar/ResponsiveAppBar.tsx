@@ -35,7 +35,7 @@ function HideOnScroll(props: Props) {
 
 function ResponsiveAppBar() {
     console.log("@@@: ResponsiveAppBar");
-    // const [login, setLogin] = useState(false);
+     //3번 렌더링 관련 주석 FeaturedBlock에 있음
     const login_query = useGetCheckQuery({});
 
     // useEffect(() => {
@@ -59,7 +59,6 @@ function ResponsiveAppBar() {
                 </Container>
             </AppBar>
         </HideOnScroll>
-
     );
 }
 export default ResponsiveAppBar;

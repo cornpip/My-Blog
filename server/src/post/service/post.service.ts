@@ -52,6 +52,7 @@ export class PostService {
     try {
       const mdpost = new MarkdownPost();
       mdpost.featureTitle = createFileDto.feature_title;
+      mdpost.subTitle = createFileDto.sub_title;
       mdpost.content = files.md[0].buffer.toString();
       await this.markdownrepo.save(mdpost);
 
@@ -73,6 +74,7 @@ export class PostService {
       const mdpost = new MarkdownPost();
       mdpost.featureTitle = createWriteDto.feature_title;
       mdpost.content = createWriteDto.content;
+      mdpost.subTitle = createWriteDto.sub_title;
       await this.markdownrepo.save(mdpost);
 
       const postimage = new PostImage();

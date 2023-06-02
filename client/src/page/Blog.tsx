@@ -7,7 +7,6 @@ import FeaturedBlock from '../component/Blog/FeaturedBlock';
 import ResponsiveAppBar from '../component/AppBar/ResponsiveAppBar';
 import Toolbar from '@mui/material/Toolbar';
 
-
 const mainFeaturedPost = {
   title: 'cornpip Blog',
   description:
@@ -17,18 +16,8 @@ const mainFeaturedPost = {
   linkText: 'Continue reading…',
 };
 
-
-interface test {
-  chapter: string
-}
-
-Blog.defaultProps = {
-  chapter: ""
-}
-
-export default function Blog(props: test) {
-  const { chapter } = props;
-  console.log("bloggggggggg", chapter);
+export default function Blog() {
+  console.log("@@@: Blog");
   return (
     <>
       <CssBaseline />
