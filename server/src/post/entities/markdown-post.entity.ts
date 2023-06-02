@@ -8,10 +8,14 @@ export class MarkdownPost { //mysql에는 markdown_post 로 들어간다.
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({
+        length: 500
+    })
     featureTitle: string
 
-    @Column()
+    @Column({
+        length: 2000
+    })
     subTitle: string
 
     //varchar은 10000언저리에서 설정못한다고 뜨더라
