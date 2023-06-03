@@ -91,6 +91,8 @@ import { APP_PIPE } from '@nestjs/core';
 ```
 + 전역 컨트롤러에 bind한다.
 
+<br/>
+
 ## Guard, middleware 차이
 - 미들웨어는 next() 함수를 호출한 후 어떤 router 핸들러가 실행될 지 알 수 없다.
 - **가드**는 ExecutionContext 인스턴스에 액세스할 수 있으므로 다음에 실행될 작업을 정확히 알 수 있다. request와 response의 정확한 지점에 구체적인 로직을 삽입한다.
