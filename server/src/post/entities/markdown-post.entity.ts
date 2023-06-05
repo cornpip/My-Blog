@@ -1,7 +1,8 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany
+    Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, ManyToOne
 } from 'typeorm';
 import { PostImage } from './post-image.entity';
+import { User } from '@/user/entities/user.entity';
 
 @Entity()
 export class MarkdownPost { //mysql에는 markdown_post 로 들어간다.
@@ -30,6 +31,13 @@ export class MarkdownPost { //mysql에는 markdown_post 로 들어간다.
     @UpdateDateColumn()
     updated: Date
 
-    @OneToMany(() => PostImage, (image) => image.post)
+    @OneToMany(() => PostImage, (image) => image.post, {
+        cascade: true,
+    })
     images: PostImage[]
+
+    @ManyToOne(() => User, (user) => user.posts, {
+        onDelete: 'CASCADE',
+    })
+    user: User
 }

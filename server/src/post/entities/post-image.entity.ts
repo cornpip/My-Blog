@@ -11,6 +11,8 @@ export class PostImage {
     @Column()
     imageName: string
 
-    @ManyToOne(() => MarkdownPost, (post) => post.id)
+    @ManyToOne(() => MarkdownPost, (post) => post.images, {
+        onDelete: "CASCADE"
+    })
     post: MarkdownPost //default post_reference colum 붙는다
 }

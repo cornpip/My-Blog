@@ -20,11 +20,11 @@ export class AuthService {
     ) { }
 
     async validateUser(check_user_dto: CheckUserDto) {
-        const db_user = await this.userService.checkUser(check_user_dto);
-        if (db_user.length === 0) throw new Error("not exist user");
-        const res = await argon2.verify(db_user[0].password, check_user_dto.password);
+        const user = await this.userService.checkUser(check_user_dto);
+        if (!user) throw new Error("not exist user");
+        const res = await argon2.verify(user.password, check_user_dto.password);
         if (!res) throw new Error("wrong password");
-        return db_user[0];
+        return user;
     }
 
     async login(user: User) {
