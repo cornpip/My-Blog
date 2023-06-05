@@ -16,9 +16,9 @@ _블로그로 구색을 갖추면 상시 호스팅 할 예정입니다._
     + posting page의 editer로 react-codemirror를 사용합니다.
 + 서버 : 
     + Nest.js : [Nest.js 관련 정리](https://github.com/cornpip/react_io/blob/master/server/README.md)
-    + TypeORM
+    + TypeORM : [ORM 관련 정리](https://github.com/cornpip/react_io/blob/master/readmefolder/orm.md)
     + 인증 :
-        + 미들웨어에서 토큰유무와 refresh토큰을 검증하고 acc토큰을 refresh합니다. 그 다음 JwtGuard를 거쳐 JwtStrategy로 이어집니다. Strategy에서 토큰의 유효성을 검사하고 payload를 req.user에 할당할 수 있습니다.
+        + 미들웨어에서 토큰 유무와 refresh토큰을 검증하고 acc토큰을 refresh합니다. 그 다음 JwtGuard를 거쳐 JwtStrategy로 이어집니다. Strategy에서 토큰의 유효성을 검사하고 payload를 req.user에 할당할 수 있습니다.
 
         + JwtGuard는 전역으로 적용되고 비인가 사용자의 접근은 JwtStrategy에서 차단됩니다. 특정 라우터에서 차단을 회피하기 위해 JwtGuard에선 데코레이터의 데이터를 읽고 선택적으로 strategy로 이어지는 인증을 건너뛸 수 있습니다.
 

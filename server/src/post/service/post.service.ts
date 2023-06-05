@@ -18,9 +18,6 @@ export class PostService {
     @InjectRepository(MarkdownPost)
     private readonly markdownrepo: Repository<MarkdownPost>,
 
-    @InjectRepository(PostImage)
-    private readonly postimages: Repository<PostImage>,
-
     private readonly configService: ConfigService,
     private readonly userService: UserService
   ) { }
