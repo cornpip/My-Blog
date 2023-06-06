@@ -77,7 +77,9 @@ export class PostController {
   }
 
   @Patch(':id')
+  //UseInterceptors없을 때는 formdata로 해야 정상적으로 넘어온다.
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    console.log("Patch", id);
     return this.postService.update(+id, updatePostDto);
   }
 
@@ -100,8 +102,6 @@ export class PostController {
   @Post('/test')
   // this.SaveFilePipe() //데코레이터 인자 안에서 this는 contorller와 다른 듯 하다.
   // @UseInterceptors(FilesInterceptor('files', 2)) //MulterOption
-  // 1차적으로 interceptor에서 없는 field가 들어오면 "Unexpected field" + 400error
-  // 명시된 field가 안들어오는건 상관X
   @UseInterceptors(FileFieldsInterceptor([
     { name: "image", maxCount: 1 },
     { name: "md", maxCount: 1 }

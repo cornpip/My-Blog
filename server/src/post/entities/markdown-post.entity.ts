@@ -1,8 +1,9 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, ManyToOne
+    Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, ManyToOne, JoinTable
 } from 'typeorm';
 import { PostImage } from './post-image.entity';
 import { User } from '@/user/entities/user.entity';
+import { Tag } from './tag.entity';
 
 @Entity()
 export class MarkdownPost { //mysql에는 markdown_post 로 들어간다.
@@ -40,4 +41,10 @@ export class MarkdownPost { //mysql에는 markdown_post 로 들어간다.
         onDelete: 'CASCADE',
     })
     user: User
+
+    @ManyToMany(() => Tag, (tag) => tag.posts, {
+        cascade: true,
+    })
+    @JoinTable()
+    tags: Tag[]
 }

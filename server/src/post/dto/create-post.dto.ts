@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 
 export class CreateFileDto {
     @IsString()
@@ -17,4 +17,8 @@ export class CreateWrtieDto {
 
     @IsString()
     readonly content: string;
+
+    @IsString()
+    @IsOptional()
+    readonly tags: string;
 }

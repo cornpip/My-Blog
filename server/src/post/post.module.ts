@@ -6,6 +6,7 @@ import { MarkdownPost, PostImage } from './entities';
 import { StreamController } from './controller/stream.controller';
 import { UserService } from '@/user/service/user.service';
 import { User } from '@/user/entities/user.entity';
+import { Tag } from './entities/tag.entity';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { User } from '@/user/entities/user.entity';
       MarkdownPost,
       PostImage,
       User,
+      Tag,
     ]),
     // MulterModule.registerAsync({
     //   useClass: MulterPostConfig,

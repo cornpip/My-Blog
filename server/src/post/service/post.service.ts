@@ -11,12 +11,15 @@ import { JwtDecode } from '@/jwt/jwt.interface';
 import { UserService } from '@/user/service/user.service';
 import { join } from 'path';
 import { unlink } from 'fs';
+import { Tag } from '../entities/tag.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(MarkdownPost)
     private readonly markdownrepo: Repository<MarkdownPost>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
 
     private readonly configService: ConfigService,
     private readonly userService: UserService
@@ -47,6 +50,19 @@ export class PostService {
   async createWrite(req_user: JwtDecode, createWriteDto: CreateWrtieDto, file: Express.Multer.File) {
     const [imgName, imgcb] = PostFs(file, this.configService);
     try {
+      const arr_tag = createWriteDto.tags.split("_");
+      const arr_tag_repo = [];
+      arr_tag.forEach(async (tag_string) => {
+        const tag = await this.tagRepository.findOne({ where: { tag: tag_string } })
+        if (!tag) {
+          const tag_repo = new Tag();
+          this.tagRepository.merge(tag_repo, { tag: tag_string });
+          arr_tag_repo.push(tag_repo);
+        } else {
+          arr_tag_repo.push(tag);
+        }
+      })
+
       const postimage = new PostImage();
       postimage.imageName = imgName;
 
@@ -56,6 +72,7 @@ export class PostService {
       mdpost.content = createWriteDto.content;
       mdpost.images = [postimage]; //cascade: true가 아니면 postimage를 따로 save해야한다.
       mdpost.user = await this.userService.currentUser(req_user);
+      mdpost.tags = arr_tag_repo;
       await this.markdownrepo.save(mdpost);
 
     } catch (err) {
@@ -94,6 +111,12 @@ export class PostService {
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
+    //이미지 수정은 나중에
+    //대충 update(id, {~~})
+    console.log(updatePostDto);
+    //일단 여기서 태그 때문에 따로 오브젝트 하나 만들어야 할 듯
+
+    // this.markdownrepo.update(id, updatePostDto);
     return `This action updates a #${id} post`;
   }
 
