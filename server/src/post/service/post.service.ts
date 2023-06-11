@@ -50,19 +50,7 @@ export class PostService {
   async createWrite(req_user: JwtDecode, createWriteDto: CreateWrtieDto, file: Express.Multer.File) {
     const [imgName, imgcb] = PostFs(file, this.configService);
     try {
-      const arr_tag = createWriteDto.tags.split("_");
-      const arr_tag_repo = [];
-      arr_tag.forEach(async (tag_string) => {
-        const tag = await this.tagRepository.findOne({ where: { tag: tag_string } })
-        if (!tag) {
-          const tag_repo = new Tag();
-          this.tagRepository.merge(tag_repo, { tag: tag_string });
-          arr_tag_repo.push(tag_repo);
-        } else {
-          arr_tag_repo.push(tag);
-        }
-      })
-
+      const arr_tag_repo = await this.createTags(createWriteDto.tags);
       const postimage = new PostImage();
       postimage.imageName = imgName;
 
@@ -110,13 +98,26 @@ export class PostService {
     return `This action return file/files`
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
+  async update(id: number, updatePostDto: UpdatePostDto) {
     //이미지 수정은 나중에
-    //대충 update(id, {~~})
-    console.log(updatePostDto);
-    //일단 여기서 태그 때문에 따로 오브젝트 하나 만들어야 할 듯
+    const mdpost = await this.markdownrepo.findOne({
+      relations: {
+        tags: true,
+      },
+      where: { id: id }
+    })
 
-    // this.markdownrepo.update(id, updatePostDto);
+    if (updatePostDto.tags) {
+      const arr_tag_repo = await this.createTags(updatePostDto.tags);
+      mdpost.tags = arr_tag_repo;
+    }
+
+    if (updatePostDto.feature_title) mdpost.featureTitle = updatePostDto.feature_title;
+    if (updatePostDto.sub_title) mdpost.subTitle = updatePostDto.sub_title;
+    if (updatePostDto.sub_title) mdpost.content = updatePostDto.content;
+
+    this.markdownrepo.save(mdpost);
+    //many-many는 매번 통계 query로 tag 쓰이는지 확인하고 지워야하는데 매번 하는건 별로인 것 같다. 이런류는 나중에 일정 시간마다 쿼리도는 로직에 있는게 좋겠다.
     return `This action updates a #${id} post`;
   }
 
@@ -149,4 +150,21 @@ export class PostService {
       })
     })
   }
+
+  async createTags(tags: string): Promise<Tag[]> {
+    const arr_tag = tags.split("_");
+    const arr_tag_repo = [];
+    for (let tag_string of arr_tag) {
+      const tag = await this.tagRepository.findOne({ where: { tag: tag_string } });
+      if (!tag) {
+        const tag_repo = new Tag();
+        this.tagRepository.merge(tag_repo, { tag: tag_string });
+        arr_tag_repo.push(tag_repo);
+      } else {
+        arr_tag_repo.push(tag);
+      }
+    }
+    return arr_tag_repo;
+  }
+
 }
