@@ -1,15 +1,13 @@
-import { Box, Button, Container, Grid, TextField } from "@mui/material";
-import { useState, useEffect, useCallback } from "react";
+import { Box, Button, Container, Grid, TextField, makeStyles } from "@mui/material";
+import { useState, useEffect, useCallback, KeyboardEvent } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
-import BasicTable from "../component/Table/BasicTable";
 import { sample_txt } from "../constants/sample.const";
 import { useGetCheckQuery } from "../api/api";
 import NoAuth from "./NoAuth";
 import PostAPI from "../api/post";
 import { useNavigate } from "react-router-dom";
 import EditCodeMirror from "../component/Blog/EditCodeMirror";
-
 
 export default function Posting() {
     const [text, setText] = useState<string>("");
@@ -20,6 +18,8 @@ export default function Posting() {
     const [err, setErr] = useState(false);
     const [imgborder, setimgBorder] = useState({});
     const [editborder, setEditBorder] = useState({});
+    const [tags, setTags] = useState<Array<string>>([]);
+    const [tag, setTag] = useState<string>("");
     const login_query = useGetCheckQuery({});
     const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ export default function Posting() {
             borderRadius: 2
         });
         else if (!title) setErr(true);
-        else if (!text) setEditBorder({ border: 1, borderColor: 'error.main'});
+        else if (!text) setEditBorder({ border: 1, borderColor: 'error.main' });
 
         if (title && text && formData.has("file")) {
             formData.delete("feature_title"); formData.delete("sub_title"); formData.delete("content");
@@ -79,6 +79,24 @@ export default function Posting() {
         }
     }
 
+    function tagsHandler(e: React.ChangeEvent<HTMLInputElement>) {
+        setTag(e.target.value);
+    }
+
+    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setTags(pre_tags => {
+                let r_tag = tag.trim();
+                if (!pre_tags.includes(r_tag)) pre_tags.push(r_tag);
+                setTag("");
+                return pre_tags;
+            });
+        }
+        if (e.key == "Space") {
+            setTag(v => v + " ");
+        }
+    };
+
     return (
         <>
             {login_query.error && <NoAuth />}
@@ -87,33 +105,6 @@ export default function Posting() {
                     <Grid container spacing={2} sx={{ height: "100%" }}>
                         <Grid item xs={12}>
                             <MiniHead />
-                        </Grid>
-                        <Grid item xs={12} sx={{ display: 'flex' }}>
-                            <Box sx={{ flexGrow: 1 }}>
-                                <Button
-                                    color="secondary"
-                                    variant='contained'
-                                    component="label"
-                                    sx={{}}
-                                >
-                                    Feature image upload *
-                                    <input hidden multiple type="file" onChange={(e) => inputHandler(e)} />
-                                </Button>
-                            </Box>
-                            <Button
-                                variant='contained'
-                                color='success'
-                                onClick={submitHandler}
-                            >
-                                submit
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12} sx={{}}>
-                            <Box sx={{
-                                width: { xs: "100%", md: "50%" }, ...imgborder
-                            }}>
-                                <BasicTable headrows={["fileName", "type", "size(KB)"]} rows={filesInfo} />
-                            </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -135,6 +126,31 @@ export default function Posting() {
                                 onChange={subTtileHandler}
                                 sx={{ width: { xs: "100%", lg: "100%" } }}
                             />
+                        </Grid>
+                        <Grid item xs={12} width={"100%"}>
+                            <Box sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                height: "100%",
+                                alignItems: "center"
+                            }}>
+                                {tags.map((v) => {
+                                    return (
+                                        <Box key={v} sx={{ padding: 2, backgroundColor: "rgb(233, 233, 233)", margin: 1, borderRadius: "16px" }}>{v}</Box>
+                                    )
+                                })}
+                                <input type="text" placeholder={"태그를 입력하세요."} value={tag} style={{
+                                    border: 0,
+                                    borderRadius: "16px",
+                                    backgroundColor: "rgb(233, 233, 233)",
+                                    padding: "16px",
+                                    boxSizing: "border-box",
+                                    whiteSpace: "normal",
+                                }}
+                                    onChange={tagsHandler}
+                                    onKeyDown={handleKeyPress}>
+                                </input>
+                            </Box>
                         </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
                             <Box sx={{ ...editborder }}>
