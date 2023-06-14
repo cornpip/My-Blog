@@ -6,6 +6,10 @@ export class CreateFileDto {
 
     @IsString()
     readonly sub_title: string;
+
+    @IsString()
+    @IsOptional()
+    readonly tags: string;
 }
 
 export class CreateWrtieDto {

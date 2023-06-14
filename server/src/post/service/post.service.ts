@@ -35,8 +35,9 @@ export class PostService {
       mdpost.featureTitle = createFileDto.feature_title;
       mdpost.subTitle = createFileDto.sub_title;
       mdpost.content = files.md[0].buffer.toString();
-      mdpost.images = [postimage]
+      mdpost.images = [postimage];
       mdpost.user = await this.userService.currentUser(req_user);
+      if(createFileDto.tags) mdpost.tags = await this.createTags(createFileDto.tags);
 
       await this.markdownrepo.save(mdpost);
     } catch (err) {
@@ -50,7 +51,6 @@ export class PostService {
   async createWrite(req_user: JwtDecode, createWriteDto: CreateWrtieDto, file: Express.Multer.File) {
     const [imgName, imgcb] = PostFs(file, this.configService);
     try {
-      const arr_tag_repo = await this.createTags(createWriteDto.tags);
       const postimage = new PostImage();
       postimage.imageName = imgName;
 
@@ -60,7 +60,7 @@ export class PostService {
       mdpost.content = createWriteDto.content;
       mdpost.images = [postimage]; //cascade: true가 아니면 postimage를 따로 save해야한다.
       mdpost.user = await this.userService.currentUser(req_user);
-      mdpost.tags = arr_tag_repo;
+      if(createWriteDto.tags) mdpost.tags = await this.createTags(createWriteDto.tags);
       await this.markdownrepo.save(mdpost);
 
     } catch (err) {
@@ -74,7 +74,8 @@ export class PostService {
   async findAll() {
     const res = await this.markdownrepo.find({
       relations: {
-        images: true
+        images: true,
+        tags: true,
       }, order: {
         id: "DESC"
       }
@@ -85,7 +86,8 @@ export class PostService {
   async findOne(param_id: number) {
     const res = await this.markdownrepo.findOne({
       relations: {
-        images: true
+        images: true,
+        tags: true,
       },
       where: {
         id: param_id
