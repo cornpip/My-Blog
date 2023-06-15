@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, makeStyles } from "@mui/material";
+import { Box, Container, Grid, TextField } from "@mui/material";
 import { useState, useEffect, useCallback, KeyboardEvent } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
@@ -8,6 +8,7 @@ import NoAuth from "./NoAuth";
 import PostAPI from "../api/post";
 import { useNavigate } from "react-router-dom";
 import EditCodeMirror from "../component/Blog/EditCodeMirror";
+import SubmitBar from "../component/BottomBar/SubmitBar";
 
 export default function Posting() {
     const [text, setText] = useState<string>("");
@@ -153,16 +154,26 @@ export default function Posting() {
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
-                            <Box sx={{ ...editborder }}>
+                            <Box sx={{
+                                ...editborder,
+                                paddingBottom: "8vh"
+                            }}>
                                 <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} zeroMinWidth sx={{}}>
-                            <Box sx={{ height: "100vh", overflow: "auto" }}>
-                                {text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
+                            <Box sx={{
+                                paddingBottom: "8vh",
+                            }}>
+                                <Box sx={{
+                                    height: "92vh", overflow: "auto",
+                                }}>
+                                    {text ? <ReactMd text={text} /> : <ReactMd text={sample_txt} />}
+                                </Box>
                             </Box>
                         </Grid>
                     </Grid>
+                    <SubmitBar />
                 </Container >
             }
         </>

@@ -26,9 +26,14 @@ export default function EditCodeMirror(props: CodeMirrorProps) {
 
 const fixedHeightEditor = EditorView.theme({
     ".cm-scroller": {
-        overflowX: "auto"
+        overflowX: "auto",
     },
-    "&": { height: "100vh" },
+    "&": {
+        height: "92vh",
+    },
+    ".cm-content": {
+        paddingBottom: "20px",
+    }
 })
 
 const fontSize = EditorView.baseTheme({

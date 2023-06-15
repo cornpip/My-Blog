@@ -38,7 +38,7 @@ export default function ReactMd(props: ReactMdProps) {
     };
 
     return (
-        <div className='markdown-body'>
+        <div className='markdown-body' style={{paddingBottom: "20px"}}>
             <ReactMarkdown
                 remarkPlugins={[rehypeHighlight, remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
