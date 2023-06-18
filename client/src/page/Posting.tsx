@@ -9,6 +9,7 @@ import PostAPI from "../api/post";
 import { useNavigate } from "react-router-dom";
 import EditCodeMirror from "../component/Blog/EditCodeMirror";
 import SubmitBar from "../component/BottomBar/SubmitBar";
+import Tags from "../component/Blog/Tags";
 
 export default function Posting() {
     const [text, setText] = useState<string>("");
@@ -19,8 +20,6 @@ export default function Posting() {
     const [err, setErr] = useState(false);
     const [imgborder, setimgBorder] = useState({});
     const [editborder, setEditBorder] = useState({});
-    const [tags, setTags] = useState<Array<string>>([]);
-    const [tag, setTag] = useState<string>("");
     const login_query = useGetCheckQuery({});
     const navigate = useNavigate();
 
@@ -80,24 +79,6 @@ export default function Posting() {
         }
     }
 
-    function tagsHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        setTag(e.target.value);
-    }
-
-    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            setTags(pre_tags => {
-                let r_tag = tag.trim();
-                if (!pre_tags.includes(r_tag)) pre_tags.push(r_tag);
-                setTag("");
-                return pre_tags;
-            });
-        }
-        if (e.key == "Space") {
-            setTag(v => v + " ");
-        }
-    };
-
     return (
         <>
             {login_query.error && <NoAuth />}
@@ -129,29 +110,7 @@ export default function Posting() {
                             />
                         </Grid>
                         <Grid item xs={12} width={"100%"}>
-                            <Box sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                height: "100%",
-                                alignItems: "center"
-                            }}>
-                                {tags.map((v) => {
-                                    return (
-                                        <Box key={v} sx={{ padding: 2, backgroundColor: "rgb(233, 233, 233)", margin: 1, borderRadius: "16px" }}>{v}</Box>
-                                    )
-                                })}
-                                <input type="text" placeholder={"태그를 입력하세요."} value={tag} style={{
-                                    border: 0,
-                                    borderRadius: "16px",
-                                    backgroundColor: "rgb(233, 233, 233)",
-                                    padding: "16px",
-                                    boxSizing: "border-box",
-                                    whiteSpace: "normal",
-                                }}
-                                    onChange={tagsHandler}
-                                    onKeyDown={handleKeyPress}>
-                                </input>
-                            </Box>
+                            <Tags />
                         </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
                             <Box sx={{
