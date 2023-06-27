@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material"
 import { useState, KeyboardEvent } from "react";
+import "../../css/Tags.module.css";
 
 export default function Tags() {
     const [tags, setTags] = useState<Array<string>>([]);
@@ -41,15 +42,17 @@ export default function Tags() {
                         padding: 1.5,
                         mx: 1,
                         marginBottom: 1,
-                        backgroundColor: "rgb(233, 233, 233)",
+                        backgroundColor: "#e3f2fd",
                         cursor: "pointer",
                         "&:hover": {
-                            backgroundColor: "rgb(180, 180, 180)",
+                            backgroundColor: "#9ea9b1",
                         }
                     }}
                         onClick={() => removeHandler(v)}
                     >
-                        <Typography>{v}</Typography>
+                        <Typography sx={{
+                            fontFamily: "'Noto Sans KR', sans-serif",
+                        }}>{v}</Typography>
                     </Box>
                 )
             })}
@@ -63,10 +66,14 @@ export default function Tags() {
                     borderRadius: 2,
                     padding: 1.5,
                     marginBottom: 1,
-                    backgroundColor: "rgb(233, 233, 233)",
+                    backgroundColor: "#e8f4fd",
                     boxSizing: "border-box",
                     whiteSpace: "normal",
                     fontSize: "1rem",
+                    fontFamily: "'Noto Sans KR', sans-serif",
+                    "&::placeholder" : {
+                        // color: "white",
+                    }
                 }}
                 onChange={tagsHandler}
                 onKeyDown={handleKeyPress}

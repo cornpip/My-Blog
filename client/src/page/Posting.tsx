@@ -1,5 +1,5 @@
 import { Box, Container, Grid, TextField } from "@mui/material";
-import { useState, useEffect, useCallback, KeyboardEvent } from "react";
+import { useState, useEffect, useCallback, KeyboardEvent, useRef } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
 import { sample_txt } from "../constants/sample.const";
@@ -22,6 +22,9 @@ export default function Posting() {
     const [editborder, setEditBorder] = useState({});
     const login_query = useGetCheckQuery({});
     const navigate = useNavigate();
+
+    const titleRef = useRef<HTMLInputElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
 
     function titleHandler(e: any) {
         setTitle(e.target.value);
@@ -55,17 +58,16 @@ export default function Posting() {
     }
 
     async function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
-        setimgBorder({}); setErr(false);
+        setEditBorder({}); setErr(false);
+        if (!title) {
+            setErr(true);
+            titleRef.current?.scrollIntoView({ behavior: 'smooth' });
+        } else if (!text) {
+            setEditBorder({ border: 1, borderColor: 'error.main' });
+            textRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
 
-        if (!formData.has("file")) setimgBorder({
-            border: 2,
-            borderColor: 'error.main',
-            borderRadius: 2
-        });
-        else if (!title) setErr(true);
-        else if (!text) setEditBorder({ border: 1, borderColor: 'error.main' });
-
-        if (title && text && formData.has("file")) {
+        if (title && text) {
             formData.delete("feature_title"); formData.delete("sub_title"); formData.delete("content");
             formData.append("feature_title", title);
             formData.append("sub_title", subTitle);
@@ -96,6 +98,7 @@ export default function Posting() {
                                 label="Title"
                                 value={title}
                                 onChange={titleHandler}
+                                ref={titleRef}
                                 sx={{ width: { xs: "100%", lg: "100%" } }}
                             />
                         </Grid>
@@ -113,10 +116,12 @@ export default function Posting() {
                             <Tags />
                         </Grid>
                         <Grid item xs={12} md={6} sx={{}}>
-                            <Box sx={{
-                                ...editborder,
-                                paddingBottom: "8vh"
-                            }}>
+                            <Box
+                                ref={textRef}
+                                sx={{
+                                    ...editborder,
+                                    paddingBottom: "8vh"
+                                }}>
                                 <EditCodeMirror text={text} sample_txt={sample_txt} onChange={editOnChange} />
                             </Box>
                         </Grid>
@@ -132,7 +137,7 @@ export default function Posting() {
                             </Box>
                         </Grid>
                     </Grid>
-                    <SubmitBar />
+                    <SubmitBar submitHandler={submitHandler} />
                 </Container >
             }
         </>

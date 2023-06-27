@@ -7,6 +7,10 @@ interface Props {
     children: React.ReactElement;
 }
 
+interface SubmitProps {
+    submitHandler: (e: any) => void;
+}
+
 function HideOnScroll(props: Props) {
     //자식요소가 있다면 children은 기본 prop에 담겨 넘어온다.
     const { children, window } = props;
@@ -21,7 +25,8 @@ function HideOnScroll(props: Props) {
     );
 }
 
-export default function SubmitBar() {
+export default function SubmitBar(props: SubmitProps) {
+    const { submitHandler } = props;
     return (
         <HideOnScroll>
             <Box display="flex" sx={{
@@ -52,6 +57,7 @@ export default function SubmitBar() {
                         backgroundColor: blue[800],
                         fontFamily: "'Nanum Gothic', sans-serif",
                     }}
+                    onClick={submitHandler}
                 >
                     글 쓰기
                 </Button>
