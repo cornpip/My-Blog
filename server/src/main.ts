@@ -9,26 +9,25 @@ import * as path from 'path';
 declare const module: any;
 
 async function bootstrap() {
-  const private_path = path.resolve(__dirname, "../secrets", "private.key");
-  const certificate_path = path.resolve(__dirname, "../secrets", "certificate.crt");
-  const httpsOptions = {
-    key: fs.readFileSync(private_path),
-    cert: fs.readFileSync(certificate_path),
-  }
+  // const private_path = path.resolve(__dirname, "../secrets", "private.key");
+  // const certificate_path = path.resolve(__dirname, "../secrets", "certificate.crt");
+  // const httpsOptions = {
+  //   key: fs.readFileSync(private_path),
+  //   cert: fs.readFileSync(certificate_path),
+  // }
 
   // const production = +process.env.PRODUCTION;
   // const log_level: Array<LogLevel> = production ? ['log', 'error', 'warn'] : ['log', 'error', 'warn', 'debug', 'verbose'];
   const app = await NestFactory.create(AppModule, {
     // logger: log_level,
-    httpsOptions,
+    // httpsOptions,
   });
   //winston config level로 따라간다.
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   const configService = app.get(ConfigService);
   app.use(cookieParser());
   app.enableCors({
-    origin: [`https://cornpip.store`],
-    // origin: [`https://cornpip.store`, `http://1.244.55.14`, `https://1.244.55.14`, `http://localhost`, `https://localhost`],
+    origin: [`https://cornpip.store`, `http://1.244.55.14`, `https://1.244.55.14`, `http://localhost:3000`, `https://localhost:3000`],
     methods: 'GET,POST,DELETE,PUT,PATCH,HEAD,OPTIONS',
     credentials: true,
   });

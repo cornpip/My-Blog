@@ -7,10 +7,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ioblog
-    command: >
-      bash -c "
-        docker-entrypoint.sh --lower_case_table_names=1;
-      "
+    # command: >
+    #   bash -c "
+    #     docker-entrypoint.sh --lower_case_table_names=1;
+    #   "
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d
     healthcheck:
@@ -43,8 +43,10 @@ services:
 
   client:
     image: node:lts-alpine3.16
+    # ports:
+    #   - 443:443
     ports:
-      - 443:443
+      - 80:80
     command: sh -c 'cd client && npm i && npm run build && node app.js'
     volumes:
       - ./client:/client
