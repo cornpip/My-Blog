@@ -25,6 +25,7 @@ export default ()=>({
     server: {
         port: +process.env.SERVER_PORT,
         cors_port: +process.env.CORS_PORT,
+        cors_origin: process.env.CORS_ORIGIN
     },
 
     redis: {

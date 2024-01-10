@@ -52,8 +52,8 @@ export class AuthService {
         res: Response,
         token: { acc: string, ref: string }
     ) {
-        res.cookie("access_token", token.acc, { httpOnly: true, sameSite:"none", secure:true });
-        res.cookie("refresh_token", token.ref, { httpOnly: true, sameSite:"none", secure:true });
+        res.cookie("access_token", token.acc, { httpOnly: true });
+        res.cookie("refresh_token", token.ref, { httpOnly: true });
         return;
     }
 
@@ -81,11 +81,11 @@ export class AuthService {
      * @param flag access token validate=1, refresh token validate=2
      * @returns success=true, fail=false
      */
-    async validateToken(userId: number, token: string, flag: number){
+    async validateToken(userId: number, token: string, flag: number) {
         const total_token = await this.redis.get(`${userId}`);
         const [acc_token, ref_token] = total_token.split(",");
-        if(flag === 1) return token == acc_token;
-        else if(flag === 2) return token == ref_token;
+        if (flag === 1) return token == acc_token;
+        else if (flag === 2) return token == ref_token;
         throw new Error("validateToken function not working");
     }
 }
