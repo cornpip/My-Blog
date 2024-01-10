@@ -38,6 +38,7 @@ services:
     ports:
       - 8000:8000
     command: sh -c 'cd server && npm i && npm run start:prod'
+    # command: sh -c 'cd server && npm run start:prod'
     volumes:
       - ./server:/server
 
@@ -47,8 +48,9 @@ services:
     #   - 443:443
     ports:
       - 80:3000
-    command: sh -c 'cd client && npm i && npm run build:docker && set PORT=3000 && node app.js'
-    # command: sh -c 'cd client && node app.js'
+    # ec2에서 빌드하면 터짐, 밖에서 하고 SCP로
+    # command: sh -c 'cd client && npm i && npm run build:docker && set PORT=3000 && node app.js'
+    command: sh -c 'cd client && set PORT=3000 && node app.js'
     volumes:
       - ./client:/client
 
