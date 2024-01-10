@@ -42,7 +42,7 @@ export class PostController {
   }
 
   @Post("/write")
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   async createWrite(
     @UploadedFile(new WrtiePipe()) file: Express.Multer.File,
     @Body() createWrtieDto: CreateWrtieDto,

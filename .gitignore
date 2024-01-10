@@ -7,4 +7,5 @@ db_data
 *.sql
 *.pem
 nodeTest
-test
+test*
+key

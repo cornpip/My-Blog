@@ -2,13 +2,10 @@
 
 ### Link
 
-[https://cornpip.store](https://cornpip.store)
+~~[https://cornpip.store](https://cornpip.store)~~
 
-직접 운영하는 개인 블로그
-
-- React, NestJS, MySQL, REDIS, Docker를 활용합니다.
-- 개인으로 풀스택 프로젝트를 진행하며 웹을 전반적으로 탐구하고 React와 NestJS의 기본을 공부합니다.
-- 꾸준히 기능을 추가해나가며 지속적인 CI/CD를 목표합니다.
+혼자서 풀스택으로 블로그를 만들며 웹을 전반적으로 탐구하고 React, NestJS를 공부
+- React, NestJS, MySQL, REDIS, Docker 활용
 
 ## Develope
 

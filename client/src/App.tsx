@@ -2,7 +2,7 @@ import Blog from "./page/Blog";
 import Ai from "./page/Ai";
 import Upload from "./page/Upload"
 import Posting from "./page/Posting";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import SignIn from "./page/Signin";
 import Post from "./page/Post";
 import NoPage from "./page/NoPage";
@@ -16,6 +16,7 @@ let theme = createTheme({
 theme = responsiveFontSizes(theme);
 
 function App() {
+  const root = process.env.REACT_APP_ROOT as string;
   return (
     <BrowserRouter>
       <ScrollTop />
@@ -28,9 +29,10 @@ function App() {
           <Route path={process.env.REACT_APP_ROOT + "/posting"} element={<Posting />} />
           <Route path={process.env.REACT_APP_ROOT + "/signin"} element={<SignIn />} />
           <Route path={process.env.REACT_APP_ROOT + "/signup"} element={<SignUp />} />
-
-          <Route path={process.env.REACT_APP_ROOT + "*"} element={<NoPage />} />
-          <Route path={"*"} element={<NoPage />} />
+          <Route
+              path="*"
+              element={<Navigate to={root} replace />}
+            />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

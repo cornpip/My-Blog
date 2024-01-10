@@ -19,14 +19,15 @@ export default function NoAuth() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: "center",
+                    flexDirection: "column",
                     p: 1,
                     m: 1,
                     bgcolor: 'background.paper',
                     height: 300,
                     borderRadius: 1,
                 }}>
-                    <Typography variant='h2'>
-                        unauthorized page
+                    <Typography variant='h3'>
+                        다시 로그인 하세요.
                     </Typography>
                 </Box>
             </Container>

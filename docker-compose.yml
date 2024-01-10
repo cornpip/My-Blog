@@ -46,8 +46,9 @@ services:
     # ports:
     #   - 443:443
     ports:
-      - 80:80
-    command: sh -c 'cd client && npm i && npm run build && node app.js'
+      - 80:3000
+    command: sh -c 'cd client && npm i && npm run build:docker && set PORT=3000 && node app.js'
+    # command: sh -c 'cd client && node app.js'
     volumes:
       - ./client:/client
 

@@ -8,7 +8,7 @@ const PostFs = (
 ) => {
     const ext = extname(file.originalname); //.png
     const base = basename(file.originalname, ext); //base 분리할 때 까지는 Lowercase X
-    const arr = [".jpg", ".png"];
+    const arr = [".jpg", ".png", "jpeg"];
     const folderPath = arr.indexOf(ext.toLowerCase()) == -1 ? configService.get("path.md") : configService.get("path.image")
     if (!existsSync(folderPath)) {
         mkdirSync(folderPath);

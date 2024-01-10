@@ -48,7 +48,7 @@ export default function SubmitBar(props: SubmitProps) {
                         fontFamily: "'Nanum Gothic', sans-serif",
                     }}
                 >
-                    임시 저장
+                    대표 이미지 추가
                 </Button>
                 <Button
                     variant='contained'

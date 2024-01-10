@@ -24,9 +24,11 @@ import { WinstonConfig } from './config/winston.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV == 'dev' ? '.env.dev' : '.env.prod',
       isGlobal: true,
       load: [configuration],
       validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('dev', 'prod').required(),
         MYSQL_HOST: Joi.string().required(),
         MYSQL_PORT: Joi.number().required(),
         MYSQL_USER: Joi.string().required(),

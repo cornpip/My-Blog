@@ -1,4 +1,4 @@
-import { Box, Container, Grid, TextField } from "@mui/material";
+import { Box, Button, Container, Grid, Slide, TextField, useScrollTrigger } from "@mui/material";
 import { useState, useEffect, useCallback, KeyboardEvent, useRef } from "react";
 import ReactMd from "../component/MarkDown/Reactmd";
 import MiniHead from "../component/Head/MiniHead";
@@ -8,15 +8,31 @@ import NoAuth from "./NoAuth";
 import PostAPI from "../api/post";
 import { useNavigate } from "react-router-dom";
 import EditCodeMirror from "../component/Blog/EditCodeMirror";
-import SubmitBar from "../component/BottomBar/SubmitBar";
 import Tags from "../component/Blog/Tags";
+import { blue } from "@mui/material/colors";
+
+interface Props {
+    window?: () => Window;
+    children: React.ReactElement;
+}
+
+function HideOnScroll(props: Props) {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+    });
+    return (
+        <Slide appear={false} direction="up" in={trigger}>
+            {children}
+        </Slide>
+    );
+}
 
 export default function Posting() {
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [subTitle, setSubTitle] = useState<string>("");
     const [formData, setFormData] = useState(new FormData);
-    const [filesInfo, setFilesInfo] = useState<Array<Array<string | number>>>([]);
     const [err, setErr] = useState(false);
     const [imgborder, setimgBorder] = useState({});
     const [editborder, setEditBorder] = useState({});
@@ -42,19 +58,11 @@ export default function Posting() {
 
     function inputHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files;
-        formData.delete("file"); //초기화
         if (files !== null) {
-            const info = [];
-
-            const fleng = files.length;
-            for (let i = 0; i < fleng; i++) {
-                info.push([files[i].name, files[i].type, Math.round(files[i].size / 1024)])
-                formData.append("file", files[i]);
-            }
-            setFilesInfo(info);
+            formData.delete("image"); //초기화
+            formData.append("image", files[0]);
         }
-        // console.log(e.target.files);
-        console.log(formData.getAll("file"));
+        console.log(formData.getAll("image"));
     }
 
     async function submitHandler(e: React.PointerEvent<HTMLButtonElement>) {
@@ -81,9 +89,14 @@ export default function Posting() {
         }
     }
 
+    useEffect(() => {
+        if (!login_query.isFetching) {
+            if (login_query.error) navigate("/signin");
+        }
+    }, [login_query.isSuccess, login_query.isError])
+
     return (
         <>
-            {login_query.error && <NoAuth />}
             {!login_query.isLoading && !login_query.error &&
                 <Container maxWidth={false} sx={{ maxWidth: { md: "95%" }, height: "100vh" }}>
                     <Grid container spacing={2} sx={{ height: "100%" }}>
@@ -137,7 +150,42 @@ export default function Posting() {
                             </Box>
                         </Grid>
                     </Grid>
-                    <SubmitBar submitHandler={submitHandler} />
+                    <HideOnScroll>
+                        <Box display="flex" sx={{
+                            position: "fixed",
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            // height: contents에 맞춤, markdown하고 codemirror는 넉넉하게 10vh띄어놈
+                            width: "95%",
+                            backgroundColor: "inherite",
+                            justifyContent: 'end'
+                        }}>
+                            <Button
+                                component="label"
+                                variant='contained'
+                                sx={{
+                                    m: 2,
+                                    backgroundColor: blue[600],
+                                    fontFamily: "'Nanum Gothic', sans-serif",
+                                }}
+                            >
+                                대표 이미지 추가(선택)
+                                <input hidden type="file" onChange={(e) => inputHandler(e)} />
+                            </Button>
+                            <Button
+                                variant='contained'
+                                sx={{
+                                    m: 2,
+                                    backgroundColor: blue[800],
+                                    fontFamily: "'Nanum Gothic', sans-serif",
+                                }}
+                                onClick={submitHandler}
+                            >
+                                글 쓰기
+                            </Button>
+                        </Box>
+                    </HideOnScroll>
                 </Container >
             }
         </>
