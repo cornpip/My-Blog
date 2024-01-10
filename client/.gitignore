@@ -32,3 +32,5 @@ Test.tsx
 secrets/*
 !secrets/privatekey
 !secrets/certificatekey
+
+deploy/build
